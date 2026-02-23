@@ -1,0 +1,500 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 25,
+  "summary": "Android application for online selling (marketplace/classifieds app similar to OLX)",
+  "architectural_notes": [
+    "Android mobile application",
+    "Marketplace/classifieds platform similar to OLX",
+    "Mobile number-based authentication for customers",
+    "Real-time chat/messaging system between buyers and sellers"
+  ],
+  "known_issues": [
+    "Chat messages are not being delivered to sellers when buyers send them",
+    "Messages are still failing to send after attempted fix",
+    "Chat interface is prompting for receiver phone number when it should auto-populate from the listing context",
+    "Unable to post listings - add creation is failing",
+    "Ads/listings are not displaying on the home page",
+    "My Chats interface is not working - users cannot open messages or reply"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-create-a-homepage-that-displays-a-grid-of-product-listings-with-images-titles-prices-and-seller-information",
+      "title": "Create a homepage that displays a grid of product listings with images, titles, prices, and seller information",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-product-listing-creation-form-where-authenticated-users-can-post-items-for-sale-with-title-description-price-category-and-image-upload",
+      "title": "Implement product listing creation form where authenticated users can post items for sale with title, description, price, category, and image upload",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-user-authentication-using-internet-identity-to-enable-users-to-create-and-manage-their-listings",
+      "title": "Implement user authentication using Internet Identity to enable users to create and manage their listings",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-product-detail-page-showing-full-product-information-seller-contact-details-and-seller-profile-link",
+      "title": "Create product detail page showing full product information, seller contact details, and seller profile link",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-category-filtering-to-allow-users-to-browse-listings-by-category-e-g-electronics-vehicles-real-estate-fashion-home-garden",
+      "title": "Implement category filtering to allow users to browse listings by category (e.g., Electronics, Vehicles, Real Estate, Fashion, Home & Garden)",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-user-profile-page-where-sellers-can-view-and-manage-all-their-active-listings-with-options-to-edit-or-delete",
+      "title": "Create user profile page where sellers can view and manage all their active listings with options to edit or delete",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-search-functionality-to-allow-users-to-search-listings-by-keywords-in-title-or-description",
+      "title": "Implement search functionality to allow users to search listings by keywords in title or description",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-modern-marketplace-visual-theme-with-warm-trustworthy-colors-earth-tones-with-accent-colors-clean-card-based-layouts-clear-typography-for-pricing-and-a-professional-look-that-encourages-buying-and-selling",
+      "title": "Apply a modern marketplace visual theme with warm, trustworthy colors (earth tones with accent colors), clean card-based layouts, clear typography for pricing, and a professional look that encourages buying and selling",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-render-generated-marketplace-images-including-hero-banner-and-category-icons-as-static-assets-in-frontend-public-assets-generated",
+      "title": "Render generated marketplace images including hero banner and category icons as static assets in frontend/public/assets/generated",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-all-price-displays-throughout-the-application-to-show-indian-rupees-inr-format-with-the-symbol-instead-of-default-currency-formatting",
+      "title": "Update all price displays throughout the application to show Indian Rupees (INR) format with the ₹ symbol instead of default currency formatting",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-price-input-field-in-the-listing-creation-form-to-display-inr-currency-symbol-and-accept-numeric-input-appropriate-for-indian-rupees",
+      "title": "Update the price input field in the listing creation form to display INR currency symbol and accept numeric input appropriate for Indian Rupees",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-price-input-field-in-the-listing-edit-form-to-display-inr-currency-symbol-and-maintain-consistent-currency-formatting-with-the-creation-form",
+      "title": "Update the price input field in the listing edit form to display INR currency symbol and maintain consistent currency formatting with the creation form",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-internet-identity-authentication-with-mobile-number-phone-number-based-authentication-system-that-allows-users-to-log-in-using-their-phone-number",
+      "title": "Replace Internet Identity authentication with mobile number (phone number) based authentication system that allows users to log in using their phone number",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-frontend-authentication-hook-to-integrate-mobile-number-authentication-replacing-the-useinternetidentity-hook-while-maintaining-the-same-interface-for-the-rest-of-the-application",
+      "title": "Update the frontend authentication hook to integrate mobile number authentication, replacing the useInternetIdentity hook while maintaining the same interface for the rest of the application",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-layout-component-header-to-display-the-user-s-mobile-number-when-authenticated-replacing-the-current-principal-display",
+      "title": "Update the Layout component header to display the user's mobile number when authenticated, replacing the current principal display",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-chat-button-or-contact-option-on-the-product-detail-page-that-allows-buyers-to-initiate-a-conversation-with-the-seller",
+      "title": "Add a chat button or contact option on the product detail page that allows buyers to initiate a conversation with the seller",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-chat-interface-component-that-opens-when-the-buyer-clicks-the-chat-button-displaying-a-conversation-view-with-the-seller-s-phone-number",
+      "title": "Implement a chat interface component that opens when the buyer clicks the chat button, displaying a conversation view with the seller's phone number",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-react-query-hooks-for-chat-operations-including-sending-messages-fetching-conversations-and-polling-for-new-messages",
+      "title": "Create React Query hooks for chat operations including sending messages, fetching conversations, and polling for new messages",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-chat-messages-section-to-the-user-profile-page-showing-all-active-conversations-with-unread-message-indicators",
+      "title": "Add a chat/messages section to the user profile page showing all active conversations with unread message indicators",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-frontend-chat-mutation-hook-to-properly-handle-message-sending-errors-and-provide-user-feedback-when-message-delivery-fails",
+      "title": "Verify and fix the frontend chat mutation hook to properly handle message sending errors and provide user feedback when message delivery fails",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-frontend-chat-mutation-in-usequeries-ts-to-ensure-it-correctly-calls-the-backend-sendmessage-function-with-all-required-parameters-and-properly-handles-both-success-and-error-responses",
+      "title": "Verify and fix the frontend chat mutation in useQueries.ts to ensure it correctly calls the backend sendMessage function with all required parameters and properly handles both success and error responses.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-user-visible-error-feedback-in-chatdialog-tsx-to-display-specific-error-messages-when-message-sending-fails-including-details-about-what-went-wrong-e-g-authentication-issues-network-errors-backend-validation-failures",
+      "title": "Add user-visible error feedback in ChatDialog.tsx to display specific error messages when message sending fails, including details about what went wrong (e.g., authentication issues, network errors, backend validation failures).",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-frontend-error-handling-in-createlistingpage-tsx-to-display-specific-error-messages-when-listing-creation-fails-including-details-about-what-went-wrong-e-g-authentication-issues-network-errors-backend-validation-failures-image-upload-problems",
+      "title": "Add frontend error handling in CreateListingPage.tsx to display specific error messages when listing creation fails, including details about what went wrong (e.g., authentication issues, network errors, backend validation failures, image upload problems).",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-my-chats-or-messages-navigation-button-link-on-the-homepage-that-allows-authenticated-users-to-quickly-access-their-conversations-the-button-should-display-an-unread-message-count-badge-when-there-are-unread-messages",
+      "title": "Add a 'My Chats' or 'Messages' navigation button/link on the HomePage that allows authenticated users to quickly access their conversations. The button should display an unread message count badge when there are unread messages.",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-existing-usequeries-chat-hooks-to-fetch-conversation-data-and-calculate-unread-message-counts-for-the-my-chats-navigation-button-badge-on-the-homepage",
+      "title": "Integrate the existing useQueries chat hooks to fetch conversation data and calculate unread message counts for the My Chats navigation button badge on the HomePage.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-homepage-component-to-ensure-all-product-listings-ads-are-displayed-in-the-grid-verify-that-the-uselistings-query-hook-is-correctly-fetching-data-from-the-backend-getalllistings-function-and-that-the-productcard-components-are-being-rendered-for-each-listing",
+      "title": "Debug and fix the HomePage component to ensure all product listings/ads are displayed in the grid. Verify that the useListings query hook is correctly fetching data from the backend getAllListings function and that the ProductCard components are being rendered for each listing.",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rename-all-occurrences-of-my-listing-or-my-listings-to-my-ads-throughout-the-application-including-the-profilepage-tabs-navigation-elements-page-titles-and-any-user-facing-text-that-references-user-listings",
+      "title": "Rename all occurrences of 'My Listing' or 'My Listings' to 'My Ads' throughout the application, including the ProfilePage tabs, navigation elements, page titles, and any user-facing text that references user listings.",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-frontend-uselistings-query-hook-in-usequeries-ts-to-ensure-it-correctly-calls-the-backend-getalllistings-function-and-properly-handles-the-response-data-structure",
+      "title": "Verify and fix the frontend useListings query hook in useQueries.ts to ensure it correctly calls the backend getAllListings function and properly handles the response data structure",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-homepage-component-to-ensure-productcard-components-render-correctly-for-all-listings-returned-by-the-uselistings-query-with-proper-error-handling-for-missing-or-malformed-listing-data",
+      "title": "Fix the HomePage component to ensure ProductCard components render correctly for all listings returned by the useListings query, with proper error handling for missing or malformed listing data",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-frontend-createlisting-mutation-hook-in-usequeries-ts-to-ensure-it-correctly-calls-the-backend-createlisting-function-with-all-required-parameters-including-mobile-authentication-context",
+      "title": "Verify and fix the frontend createListing mutation hook in useQueries.ts to ensure it correctly calls the backend createListing function with all required parameters including mobile authentication context",
+      "reqIds": [
+        "REQ-47"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-error-feedback-in-createlistingpage-tsx-to-display-comprehensive-error-messages-when-listing-creation-fails-showing-specific-details-about-authentication-state-missing-fields-image-upload-issues-or-backend-validation-errors",
+      "title": "Enhance error feedback in CreateListingPage.tsx to display comprehensive error messages when listing creation fails, showing specific details about authentication state, missing fields, image upload issues, or backend validation errors",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-chatdialog-component-in-frontend-src-components-chatdialog-tsx-to-ensure-it-opens-correctly-when-accessed-from-the-my-chats-section-properly-loads-conversation-history-and-allows-users-to-send-and-receive-messages",
+      "title": "Debug and fix the ChatDialog component in frontend/src/components/ChatDialog.tsx to ensure it opens correctly when accessed from the My Chats section, properly loads conversation history, and allows users to send and receive messages",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-conversationlist-component-in-frontend-src-components-conversationlist-tsx-to-ensure-conversations-are-clickable-and-properly-trigger-the-chatdialog-to-open-with-the-correct-conversation-context-listing-id-seller-buyer-phone-numbers",
+      "title": "Verify and fix the ConversationList component in frontend/src/components/ConversationList.tsx to ensure conversations are clickable and properly trigger the ChatDialog to open with the correct conversation context (listing ID, seller/buyer phone numbers)",
+      "reqIds": [
+        "REQ-50"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-profilepage-messages-tab-in-frontend-src-pages-profilepage-tsx-to-ensure-it-correctly-renders-the-conversationlist-component-and-handles-conversation-selection-navigation-without-errors",
+      "title": "Debug and fix the ProfilePage messages tab in frontend/src/pages/ProfilePage.tsx to ensure it correctly renders the ConversationList component and handles conversation selection/navigation without errors",
+      "reqIds": [
+        "REQ-51"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-and-fix-the-useconversations-and-usemessages-query-hooks-in-frontend-src-hooks-usequeries-ts-to-ensure-they-correctly-fetch-conversation-data-from-the-backend-and-handle-loading-error-states-properly",
+      "title": "Verify and fix the useConversations and useMessages query hooks in frontend/src/hooks/useQueries.ts to ensure they correctly fetch conversation data from the backend and handle loading/error states properly",
+      "reqIds": [
+        "REQ-52"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comprehensive-error-logging-and-user-feedback-throughout-the-chat-flow-conversationlist-chatdialog-profilepage-messages-tab-to-identify-and-display-specific-issues-preventing-users-from-opening-or-replying-to-messages",
+      "title": "Add comprehensive error logging and user feedback throughout the chat flow (ConversationList, ChatDialog, ProfilePage messages tab) to identify and display specific issues preventing users from opening or replying to messages",
+      "reqIds": [
+        "REQ-53"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create Android marketplace app with buying and selling functionality",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Create backend data model for product listings with fields for title, description, price, category, seller ID, image reference, creation timestamp, and status",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Change currency display from default to INR (Indian Rupees)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Implement customer authentication using mobile number (phone number login)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Update the backend to store and retrieve user data based on mobile number instead of Internet Identity principal",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add chat functionality to enable buyers to message sellers directly from product listings",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Update all website branding, headers, and footer references from the current marketplace name to 'OLS' throughout the application",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Create backend data model for chat messages with fields for sender phone number, receiver phone number, listing ID, message text, timestamp, and read status",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Implement backend functions to send chat messages, retrieve conversation history between buyer and seller for a specific listing, and mark messages as read",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Debug and fix the backend chat message sending function to ensure messages are properly stored and associated with the correct seller phone number when buyers send chat messages from product listings",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add error logging and validation in the backend to check that required fields (sender phone number, receiver phone number, listing ID, message text) are present when storing chat messages",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Test and fix the conversation retrieval function to ensure sellers can see messages sent to them in their conversations list on the profile page",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Debug and fix the backend chat message sending function in main.mo to identify why messages are failing to send. Add comprehensive error logging to trace the execution path when sendMessage is called, including parameter validation, state updates, and return values.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Fix the root cause preventing chat messages from being stored in the backend. Verify that the sender phone number, receiver phone number, listing ID, and message text are correctly received and processed by the sendMessage function.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Update the ChatDialog component to automatically populate the receiver phone number from the listing's seller phone number when the chat is initiated from a product detail page, eliminating the need for users to manually enter the receiver's phone number",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Verify that the ProductDetailPage correctly passes the seller's phone number from the listing data to the ChatDialog component as a prop",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Update the chat message sending logic in ChatDialog to use the pre-populated receiver phone number instead of prompting the user for it",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Debug and fix the backend createListing function in main.mo to identify why listing creation is failing. Add comprehensive error logging to trace parameter validation, image blob storage, state updates, and return values when createListing is called.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Fix the root cause preventing listings from being created in the backend. Verify that title, description, price, category, seller phone number, and image data are correctly received and processed by the createListing function, and that the listing is properly stored in the listings array.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Add a 'My Chats' or messages access option on the home page for users to quickly check their messages",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Fix the home page to display all ads/listings (currently ads are not showing)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Rename 'My Listing' to 'My Ads' throughout the application for consistent terminology",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Debug and fix the backend getAllListings function to ensure it correctly retrieves and returns all stored listings from the listings array in main.mo",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Debug and fix the backend createListing function in main.mo to identify and resolve the root cause preventing new listings from being created, including validation of all required parameters (title, description, price, category, seller phone number, image blob)",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Fix My Chats interface so users can open messages and reply (currently unable to access or use chat functionality)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Ols",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

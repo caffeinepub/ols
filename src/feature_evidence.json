@@ -1,0 +1,103 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-debug-and-fix-the-chatdialog-component-in-frontend-src-components-chatdialog-tsx-to-ensure-it-opens-correctly-when-accessed-from-the-my-chats-section-properly-loads-conversation-history-and-allows-users-to-send-and-receive-messages",
+      "featureTitle": "Debug and fix the ChatDialog component in frontend/src/components/ChatDialog.tsx to ensure it opens correctly when accessed from the My Chats section, properly loads conversation history, and allows users to send and receive messages",
+      "files": [
+        "frontend/src/components/ChatDialog.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-49"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-verify-and-fix-the-conversationlist-component-in-frontend-src-components-conversationlist-tsx-to-ensure-conversations-are-clickable-and-properly-trigger-the-chatdialog-to-open-with-the-correct-conversation-context-listing-id-seller-buyer-phone-numbers",
+      "featureTitle": "Verify and fix the ConversationList component in frontend/src/components/ConversationList.tsx to ensure conversations are clickable and properly trigger the ChatDialog to open with the correct conversation context (listing ID, seller/buyer phone numbers)",
+      "files": [
+        "frontend/src/components/ConversationList.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-50"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-debug-and-fix-the-profilepage-messages-tab-in-frontend-src-pages-profilepage-tsx-to-ensure-it-correctly-renders-the-conversationlist-component-and-handles-conversation-selection-navigation-without-errors",
+      "featureTitle": "Debug and fix the ProfilePage messages tab in frontend/src/pages/ProfilePage.tsx to ensure it correctly renders the ConversationList component and handles conversation selection/navigation without errors",
+      "files": [
+        "frontend/src/pages/ProfilePage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-51"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-verify-and-fix-the-useconversations-and-usemessages-query-hooks-in-frontend-src-hooks-usequeries-ts-to-ensure-they-correctly-fetch-conversation-data-from-the-backend-and-handle-loading-error-states-properly",
+      "featureTitle": "Verify and fix the useConversations and useMessages query hooks in frontend/src/hooks/useQueries.ts to ensure they correctly fetch conversation data from the backend and handle loading/error states properly",
+      "files": [
+        "frontend/src/hooks/useQueries.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-52"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-comprehensive-error-logging-and-user-feedback-throughout-the-chat-flow-conversationlist-chatdialog-profilepage-messages-tab-to-identify-and-display-specific-issues-preventing-users-from-opening-or-replying-to-messages",
+      "featureTitle": "Add comprehensive error logging and user feedback throughout the chat flow (ConversationList, ChatDialog, ProfilePage messages tab) to identify and display specific issues preventing users from opening or replying to messages",
+      "files": [
+        "frontend/src/components/ChatDialog.tsx",
+        "frontend/src/components/ConversationList.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/ProfilePage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-53"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

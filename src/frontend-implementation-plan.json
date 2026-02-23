@@ -1,0 +1,109 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix My Chats interface to enable opening and replying to messages",
+  "requirements": [
+    {
+      "id": "REQ-49",
+      "summary": "Debug and fix ChatDialog component to ensure it opens correctly, loads conversation history, and allows message sending",
+      "acceptanceCriteria": [
+        "ChatDialog opens without errors when clicked from My Chats/messages section",
+        "Conversation history loads and displays correctly",
+        "Users can type and send messages successfully",
+        "Sent messages appear in the conversation view",
+        "No console errors when opening or using the chat interface"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ChatDialog.tsx",
+          "operation": "modify",
+          "description": "Fix ChatDialog component to properly handle dialog open state, ensure listingId and phone number props are correctly received and used for fetching conversation data, fix message sending logic to correctly call the sendMessage backend capability with proper parameters, add defensive null checks for conversation data, and ensure the dialog trigger mechanism works correctly when invoked from ConversationList"
+        }
+      ]
+    },
+    {
+      "id": "REQ-50",
+      "summary": "Fix ConversationList component to ensure conversations are clickable and properly trigger ChatDialog with correct context",
+      "acceptanceCriteria": [
+        "Clicking on a conversation in the list opens the ChatDialog",
+        "ChatDialog receives correct listing ID and phone numbers",
+        "Conversation context is maintained when switching between chats",
+        "Click handlers are properly attached and functioning"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ConversationList.tsx",
+          "operation": "modify",
+          "description": "Fix conversation item click handlers to properly pass listingId, senderPhoneNumber, and receiverPhoneNumber to ChatDialog, ensure the onClick event is properly attached to each conversation item, add proper state management for the currently selected conversation, and verify that the conversation data structure matches the backend ChatMessage format with correct property names"
+        }
+      ]
+    },
+    {
+      "id": "REQ-51",
+      "summary": "Fix ProfilePage messages tab to correctly render ConversationList and handle conversation selection",
+      "acceptanceCriteria": [
+        "Messages tab displays conversations correctly",
+        "No errors when switching to the messages tab",
+        "Conversation selection triggers proper chat interface opening",
+        "Unread message indicators display accurately"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Fix the messages tab to properly fetch and group conversations using the useConversations hook, ensure the ConversationList component receives correctly formatted conversation data, verify that the user's phone number from useMobileAuth is correctly passed to queries, fix the unread message counting logic to properly filter and count unread messages per conversation, and ensure tab switching doesn't cause state reset issues"
+        }
+      ]
+    },
+    {
+      "id": "REQ-52",
+      "summary": "Fix useConversations and useMessages query hooks to correctly fetch data and handle states",
+      "acceptanceCriteria": [
+        "useConversations hook successfully fetches all user conversations",
+        "useMessages hook retrieves messages for specific conversations",
+        "Loading states are handled correctly",
+        "Error states are caught and displayed to users",
+        "Data structure matches backend response format"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Fix the useConversations hook to properly call getUnreadMessages backend capability with the correct phone number parameter, ensure the hook correctly transforms the returned ChatMessage array into a grouped conversation structure, fix the useMessages hook to properly call getConversation with phoneNumber1, phoneNumber2, and listingId parameters, add proper error handling and loading state management, verify query keys are correctly structured for proper cache invalidation, and ensure the data structure returned matches what ChatDialog and ConversationList components expect"
+        }
+      ]
+    },
+    {
+      "id": "REQ-53",
+      "summary": "Add comprehensive error logging and user feedback throughout the chat flow",
+      "acceptanceCriteria": [
+        "Console logs capture key events (conversation click, dialog open, message send attempts)",
+        "User-visible error messages explain what went wrong",
+        "Error boundaries prevent entire UI from breaking",
+        "Network errors are distinguished from validation errors"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ConversationList.tsx",
+          "operation": "modify",
+          "description": "Add console.log statements for conversation click events, add try-catch blocks around click handlers with user-friendly error alerts, log the conversation data being passed to ChatDialog for debugging, and add error state display for failed conversation fetches"
+        },
+        {
+          "path": "frontend/src/components/ChatDialog.tsx",
+          "operation": "modify",
+          "description": "Add console.log statements for dialog open events, message send attempts, and conversation data loading, enhance error handling in message send functionality with specific error messages for network failures vs validation errors, add logging for successful message sends, and ensure error alerts are dismissible and clearly explain the issue to users"
+        },
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Add console.log statements when switching to messages tab, log the fetched conversations data structure for debugging, add error display for failed conversation queries, and ensure loading states are properly shown while fetching conversations"
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add console.error logging for all query failures with detailed error information, log successful query responses for debugging data structure issues, add logging for query cache invalidation events, and ensure error objects are properly captured and returned with meaningful messages"
+        }
+      ]
+    }
+  ]
+}

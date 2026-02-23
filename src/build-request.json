@@ -1,0 +1,120 @@
+{
+  "kind": "build_request",
+  "title": "Fix My Chats interface to enable opening and replying to messages",
+  "projectName": "OLS",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-49",
+      "text": "Debug and fix the ChatDialog component in frontend/src/components/ChatDialog.tsx to ensure it opens correctly when accessed from the My Chats section, properly loads conversation history, and allows users to send and receive messages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-final"
+        ],
+        "quotes": [
+          "unable to use my chats option unable to open msgs and reply"
+        ]
+      },
+      "acceptanceCriteria": [
+        "ChatDialog opens without errors when clicked from My Chats/messages section",
+        "Conversation history loads and displays correctly",
+        "Users can type and send messages successfully",
+        "Sent messages appear in the conversation view",
+        "No console errors when opening or using the chat interface"
+      ]
+    },
+    {
+      "id": "REQ-50",
+      "text": "Verify and fix the ConversationList component in frontend/src/components/ConversationList.tsx to ensure conversations are clickable and properly trigger the ChatDialog to open with the correct conversation context (listing ID, seller/buyer phone numbers)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-final"
+        ],
+        "quotes": [
+          "unable to use my chats option unable to open msgs and reply"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking on a conversation in the list opens the ChatDialog",
+        "ChatDialog receives correct listing ID and phone numbers",
+        "Conversation context is maintained when switching between chats",
+        "Click handlers are properly attached and functioning"
+      ]
+    },
+    {
+      "id": "REQ-51",
+      "text": "Debug and fix the ProfilePage messages tab in frontend/src/pages/ProfilePage.tsx to ensure it correctly renders the ConversationList component and handles conversation selection/navigation without errors",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-final"
+        ],
+        "quotes": [
+          "unable to use my chats option unable to open msgs"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Messages tab displays conversations correctly",
+        "No errors when switching to the messages tab",
+        "Conversation selection triggers proper chat interface opening",
+        "Unread message indicators display accurately"
+      ]
+    },
+    {
+      "id": "REQ-52",
+      "text": "Verify and fix the useConversations and useMessages query hooks in frontend/src/hooks/useQueries.ts to ensure they correctly fetch conversation data from the backend and handle loading/error states properly",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-final"
+        ],
+        "quotes": [
+          "unable to use my chats option"
+        ]
+      },
+      "acceptanceCriteria": [
+        "useConversations hook successfully fetches all user conversations",
+        "useMessages hook retrieves messages for specific conversations",
+        "Loading states are handled correctly",
+        "Error states are caught and displayed to users",
+        "Data structure matches backend response format"
+      ]
+    },
+    {
+      "id": "REQ-53",
+      "text": "Add comprehensive error logging and user feedback throughout the chat flow (ConversationList, ChatDialog, ProfilePage messages tab) to identify and display specific issues preventing users from opening or replying to messages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-final"
+        ],
+        "quotes": [
+          "unable to open msgs and reply"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Console logs capture key events (conversation click, dialog open, message send attempts)",
+        "User-visible error messages explain what went wrong",
+        "Error boundaries prevent entire UI from breaking",
+        "Network errors are distinguished from validation errors"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify the backend chat message storage or retrieval functions",
+    "Maintain existing mobile phone number authentication system",
+    "Preserve the current conversation data structure and message format"
+  ],
+  "nonGoals": [
+    "Adding new chat features beyond basic open and reply functionality",
+    "Redesigning the chat interface UI",
+    "Implementing real-time message updates or WebSocket connections",
+    "Adding message notifications or push alerts"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
