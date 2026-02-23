@@ -159,7 +159,7 @@ export default function ChatDialog({
             ) : messages && messages.length > 0 ? (
               <div className="space-y-4 p-4">
                 {messages.map((message) => {
-                  const isOwnMessage = message.senderPhoneNumber === phoneNumber;
+                  const isOwnMessage = message.senderPhone === phoneNumber;
                   const date = new Date(Number(message.timestamp) / 1000000);
 
                   return (

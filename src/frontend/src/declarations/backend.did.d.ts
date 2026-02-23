@@ -12,24 +12,25 @@ import type { Principal } from '@icp-sdk/core/principal';
 
 export interface ChatMessage {
   'id' : bigint,
-  'receiverPhoneNumber' : string,
+  'senderPhone' : string,
   'listingId' : bigint,
   'isRead' : boolean,
   'messageText' : string,
   'timestamp' : bigint,
-  'senderPhoneNumber' : string,
+  'receiverPhone' : string,
 }
 export type ExternalBlob = Uint8Array;
 export interface ProductListing {
   'id' : bigint,
   'status' : string,
   'title' : string,
+  'sellerPhone' : string,
+  'createdAt' : bigint,
   'description' : string,
-  'timestamp' : bigint,
+  'imageUrl' : ExternalBlob,
   'category' : string,
-  'image' : ExternalBlob,
+  'brand' : [] | [string],
   'price' : bigint,
-  'sellerPhoneNumber' : string,
 }
 export interface _CaffeineStorageCreateCertificateResult {
   'method' : string,
@@ -59,12 +60,30 @@ export interface _SERVICE {
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   'createListing' : ActorMethod<
-    [string, string, string, bigint, string, ExternalBlob, bigint],
+    [
+      string,
+      string,
+      string,
+      bigint,
+      string,
+      ExternalBlob,
+      bigint,
+      [] | [string],
+    ],
     bigint
   >,
   'deleteListing' : ActorMethod<[bigint, string], undefined>,
   'editListing' : ActorMethod<
-    [bigint, string, string, string, bigint, string, ExternalBlob],
+    [
+      bigint,
+      string,
+      string,
+      string,
+      bigint,
+      string,
+      ExternalBlob,
+      [] | [string],
+    ],
     undefined
   >,
   'getAllCategories' : ActorMethod<[], Array<string>>,

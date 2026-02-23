@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 25,
+  "projectStateVersion": 37,
   "summary": "Android application for online selling (marketplace/classifieds app similar to OLX)",
   "architectural_notes": [
     "Android mobile application",
@@ -16,7 +16,8 @@
     "Ads/listings are not displaying on the home page",
     "My Chats interface is not working - users cannot open messages or reply"
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- OLS marketplace logo with shopping cart icon, colorful 'OLS' text (purple, orange, green), and magnifying glass, featuring 'On-Line Selling' tagline below. Use the uploaded image IMG-20260223-WA0852.jpg as reference (ols-logo.dim_400x300.png)",
   "existing_features": [
     {
       "id": "feature-create-a-homepage-that-displays-a-grid-of-product-listings-with-images-titles-prices-and-seller-information",
@@ -305,6 +306,150 @@
         "REQ-53"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-debug-the-homepage-component-in-frontend-src-pages-homepage-tsx-to-identify-why-product-listings-are-not-rendering-in-the-grid-add-console-logging-to-track-the-uselistings-query-response-loading-state-error-state-and-the-listings-array-data-structure",
+      "title": "Debug the HomePage component in frontend/src/pages/HomePage.tsx to identify why product listings are not rendering in the grid. Add console logging to track the useListings query response, loading state, error state, and the listings array data structure.",
+      "reqIds": [
+        "REQ-54"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-uselistings-query-hook-in-frontend-src-hooks-usequeries-ts-is-correctly-calling-the-backend-s-getalllistings-function-and-properly-transforming-the-response-data-add-error-handling-for-cases-where-the-actor-is-not-initialized-or-the-backend-call-fails",
+      "title": "Verify that the useListings query hook in frontend/src/hooks/useQueries.ts is correctly calling the backend's getAllListings function and properly transforming the response data. Add error handling for cases where the actor is not initialized or the backend call fails.",
+      "reqIds": [
+        "REQ-55"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-productcard-component-rendering-logic-in-frontend-src-components-productcard-tsx-to-handle-edge-cases-where-listing-data-might-have-missing-or-undefined-fields-add-null-checks-and-default-values-for-title-price-imageurl-and-category",
+      "title": "Fix the ProductCard component rendering logic in frontend/src/components/ProductCard.tsx to handle edge cases where listing data might have missing or undefined fields. Add null checks and default values for title, price, imageUrl, and category.",
+      "reqIds": [
+        "REQ-57"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comprehensive-error-feedback-in-homepage-tsx-to-display-specific-error-messages-when-listings-fail-to-load-including-details-about-network-errors-backend-unavailability-or-data-parsing-issues-show-a-user-friendly-error-message-with-a-retry-button",
+      "title": "Add comprehensive error feedback in HomePage.tsx to display specific error messages when listings fail to load, including details about network errors, backend unavailability, or data parsing issues. Show a user-friendly error message with a retry button.",
+      "reqIds": [
+        "REQ-58"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-smartphones-as-a-new-category-option-in-the-categoryfilter-component-alongside-existing-categories-electronics-vehicles-real-estate-fashion-home-garden",
+      "title": "Add 'Smartphones' as a new category option in the CategoryFilter component alongside existing categories (Electronics, Vehicles, Real Estate, Fashion, Home & Garden)",
+      "reqIds": [
+        "REQ-59"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-createlistingpage-form-to-include-smartphones-in-the-category-dropdown-selection-options",
+      "title": "Update the CreateListingPage form to include 'Smartphones' in the category dropdown selection options",
+      "reqIds": [
+        "REQ-60"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-editlistingpage-form-to-include-smartphones-in-the-category-dropdown-selection-options",
+      "title": "Update the EditListingPage form to include 'Smartphones' in the category dropdown selection options",
+      "reqIds": [
+        "REQ-61"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-a-smartphone-icon-image-for-the-smartphones-category-button-in-the-categoryfilter-component-and-render-it-as-a-static-asset-in-frontend-public-assets-generated",
+      "title": "Generate a smartphone icon image for the Smartphones category button in the CategoryFilter component and render it as a static asset in frontend/public/assets/generated",
+      "reqIds": [
+        "REQ-62"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-reorder-the-categories-array-in-categoryfilter-component-to-place-smartphones-as-the-first-category-option-after-all-categories-moving-it-before-electronics-vehicles-real-estate-fashion-and-home-garden",
+      "title": "Reorder the categories array in CategoryFilter component to place 'Smartphones' as the first category option (after 'All Categories'), moving it before Electronics, Vehicles, Real Estate, Fashion, and Home & Garden",
+      "reqIds": [
+        "REQ-63"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-brand-filter-dropdown-or-tag-selection-component-for-the-smartphones-category-that-displays-popular-mobile-brand-names-including-apple-samsung-oneplus-xiaomi-realme-vivo-and-oppo-when-the-smartphones-category-is-selected",
+      "title": "Add a brand filter dropdown or tag selection component for the Smartphones category that displays popular mobile brand names including Apple, Samsung, OnePlus, Xiaomi, Realme, Vivo, and Oppo when the Smartphones category is selected",
+      "reqIds": [
+        "REQ-64"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-createlistingpage-form-to-include-a-brand-dropdown-field-that-appears-when-smartphones-category-is-selected-with-options-for-apple-samsung-oneplus-xiaomi-realme-vivo-oppo-and-other",
+      "title": "Update CreateListingPage form to include a brand dropdown field that appears when Smartphones category is selected, with options for Apple, Samsung, OnePlus, Xiaomi, Realme, Vivo, Oppo, and Other",
+      "reqIds": [
+        "REQ-66"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-editlistingpage-form-to-include-a-brand-dropdown-field-that-appears-when-smartphones-category-is-selected-pre-populating-with-the-existing-brand-value-if-available",
+      "title": "Update EditListingPage form to include a brand dropdown field that appears when Smartphones category is selected, pre-populating with the existing brand value if available",
+      "reqIds": [
+        "REQ-67"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-productcard-and-productdetailpage-components-to-display-the-brand-name-for-smartphone-listings-showing-it-prominently-near-the-title-or-category-badge",
+      "title": "Update ProductCard and ProductDetailPage components to display the brand name for smartphone listings, showing it prominently near the title or category badge",
+      "reqIds": [
+        "REQ-68"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-uselistings-query-hook-to-support-filtering-by-brand-when-a-brand-is-selected-in-the-smartphones-category-filter",
+      "title": "Update the useListings query hook to support filtering by brand when a brand is selected in the Smartphones category filter",
+      "reqIds": [
+        "REQ-69"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-createlistingpage-form-to-require-category-selection-as-the-first-mandatory-step-before-displaying-any-other-form-fields-the-category-dropdown-must-be-visible-and-required-immediately-and-all-other-fields-title-description-price-image-upload-and-category-specific-fields-like-brand-should-only-appear-after-a-category-is-selected",
+      "title": "Update CreateListingPage form to require category selection as the first mandatory step before displaying any other form fields. The category dropdown must be visible and required immediately, and all other fields (title, description, price, image upload, and category-specific fields like brand) should only appear after a category is selected.",
+      "reqIds": [
+        "REQ-70"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-editlistingpage-form-to-follow-the-same-category-first-pattern-display-the-category-dropdown-prominently-at-the-top-pre-populated-with-the-existing-listing-s-category-and-show-all-other-fields-including-category-specific-fields-like-brand-for-smartphones-below-it-in-a-logical-order",
+      "title": "Update EditListingPage form to follow the same category-first pattern: display the category dropdown prominently at the top (pre-populated with the existing listing's category), and show all other fields including category-specific fields (like brand for Smartphones) below it in a logical order.",
+      "reqIds": [
+        "REQ-71"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-createlistingpage-form-field-order-to-display-category-selection-at-the-top-followed-by-brand-dropdown-when-smartphones-category-is-selected-followed-by-all-other-form-fields-title-description-price-image-upload-in-a-logical-sequence",
+      "title": "Update CreateListingPage form field order to display category selection at the top, followed by brand dropdown (when Smartphones category is selected), followed by all other form fields (title, description, price, image upload) in a logical sequence",
+      "reqIds": [
+        "REQ-72"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-uploaded-ols-logo-image-img-20260223-wa0852-jpg-to-the-application-as-the-primary-branding-logo-displaying-it-in-the-header-navigation-area-of-the-layout-component",
+      "title": "Add the uploaded OLS logo image (IMG-20260223-WA0852.jpg) to the application as the primary branding logo, displaying it in the header/navigation area of the Layout component",
+      "reqIds": [
+        "REQ-74"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -489,6 +634,60 @@
     {
       "id": "AR-33",
       "summary": "Fix My Chats interface so users can open messages and reply (currently unable to access or use chat functionality)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-36",
+      "summary": "Verify that the backend getAllListings function in backend/main.mo is returning the listings array in the correct format expected by the frontend, including all required fields (id, title, description, price, category, imageUrl, sellerPhone, createdAt).",
+      "reqIds": [
+        "REQ-56"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-37",
+      "summary": "Add smartphones category or smartphone listings to the marketplace",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-38",
+      "summary": "Move Smartphones category to first position in category filters and add popular mobile brand names (e.g., Apple, Samsung, OnePlus, Xiaomi, Realme, Vivo, Oppo) as sub-categories or filters under Smartphones category",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Update the backend Listing data model and createListing function to include an optional brand field for smartphone listings",
+      "reqIds": [
+        "REQ-65"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-42",
+      "summary": "Update CreateListingPage form to require category selection first, then dynamically show category-specific fields (e.g., brand dropdown for Smartphones) based on the selected category",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-43",
+      "summary": "Reorder CreateListingPage form fields to display in sequence: 1) Category selection first, 2) Brand dropdown (if Smartphones category), 3) All other fields (title, description, price, image upload)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Update EditListingPage form field order to match CreateListingPage, displaying category at the top (pre-populated with existing value), followed by brand dropdown (when Smartphones category), followed by all other fields",
+      "reqIds": [
+        "REQ-73"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-46",
+      "summary": "Add user-provided logo to the application (branding/visual asset update)",
       "reqIds": [],
       "status": "pending"
     }

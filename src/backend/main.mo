@@ -11,6 +11,8 @@ import Debug "mo:core/Debug";
 import Iter "mo:core/Iter";
 import MixinStorage "blob-storage/Mixin";
 
+
+
 actor {
   include MixinStorage();
 
@@ -20,10 +22,11 @@ actor {
     description : Text;
     price : Nat;
     category : Text;
-    sellerPhoneNumber : Text;
-    image : Storage.ExternalBlob;
-    timestamp : Int;
+    sellerPhone : Text;
+    imageUrl : Storage.ExternalBlob;
+    createdAt : Int;
     status : Text;
+    brand : ?Text;
   };
 
   module ProductListing {
@@ -36,19 +39,18 @@ actor {
   var nextListingId = 0;
 
   public query ({ caller }) func getAllListings() : async [ProductListing] {
-    let listingsArray = listings.values().toArray();
-    Debug.print("getAllListings - Retrieved Listings Count: " # listingsArray.size().toText());
-    listingsArray;
+    listings.values().toArray();
   };
 
   public shared ({ caller }) func createListing(
-    sellerPhoneNumber : Text,
+    sellerPhone : Text,
     title : Text,
     description : Text,
     price : Nat,
     category : Text,
-    image : Storage.ExternalBlob,
-    timestamp : Int,
+    imageUrl : Storage.ExternalBlob,
+    createdAt : Int,
+    brand : ?Text,
   ) : async Nat {
     if (title.size() == 0) {
       let errorMsg = "Title cannot be empty";
@@ -68,7 +70,7 @@ actor {
       Runtime.trap(errorMsg);
     };
 
-    if (sellerPhoneNumber.size() == 0) {
+    if (sellerPhone.size() == 0) {
       let errorMsg = "Seller phone number is required";
       Debug.print("createListing - Error: " # errorMsg);
       Runtime.trap(errorMsg);
@@ -80,10 +82,11 @@ actor {
       description;
       price;
       category;
-      sellerPhoneNumber;
-      image;
-      timestamp;
+      sellerPhone;
+      imageUrl;
+      createdAt;
       status = "active";
+      brand;
     };
 
     listings.add(nextListingId, listing);
@@ -94,17 +97,18 @@ actor {
 
   public shared ({ caller }) func editListing(
     listingId : Nat,
-    sellerPhoneNumber : Text,
+    sellerPhone : Text,
     title : Text,
     description : Text,
     price : Nat,
     category : Text,
-    image : Storage.ExternalBlob,
+    imageUrl : Storage.ExternalBlob,
+    brand : ?Text,
   ) : async () {
     switch (listings.get(listingId)) {
       case (null) { Runtime.trap("Listing does not exist") };
       case (?listing) {
-        if (listing.sellerPhoneNumber != sellerPhoneNumber) {
+        if (listing.sellerPhone != sellerPhone) {
           Runtime.trap("You are not the owner of this listing");
         };
         if (title.size() == 0) {
@@ -129,18 +133,19 @@ actor {
           description;
           price;
           category;
-          image;
+          imageUrl;
+          brand;
         };
         listings.add(listingId, updatedListing);
       };
     };
   };
 
-  public shared ({ caller }) func deleteListing(listingId : Nat, sellerPhoneNumber : Text) : async () {
+  public shared ({ caller }) func deleteListing(listingId : Nat, sellerPhone : Text) : async () {
     switch (listings.get(listingId)) {
       case (null) { Runtime.trap("Listing does not exist") };
       case (?listing) {
-        if (listing.sellerPhoneNumber != sellerPhoneNumber) {
+        if (listing.sellerPhone != sellerPhone) {
           Runtime.trap("You are not the owner of this listing");
         };
         listings.remove(listingId);
@@ -158,10 +163,10 @@ actor {
     filtered.toArray();
   };
 
-  public query func getUserListings(sellerPhoneNumber : Text) : async [ProductListing] {
+  public query func getUserListings(sellerPhone : Text) : async [ProductListing] {
     let filtered = List.empty<ProductListing>();
     for ((_, listing) in listings.entries()) {
-      if (listing.sellerPhoneNumber == sellerPhoneNumber) {
+      if (listing.sellerPhone == sellerPhone) {
         filtered.add(listing);
       };
     };
@@ -182,11 +187,11 @@ actor {
   };
 
   public query func getAllCategories() : async [Text] {
-    listings.values().toArray().map(
-      func(listing) {
-        listing.category;
-      }
-    );
+    let categories = List.empty<Text>();
+    for ((_, listing) in listings.entries()) {
+      categories.add(listing.category);
+    };
+    categories.toArray();
   };
 
   public query func getListing(listingId : Nat) : async ProductListing {
@@ -199,8 +204,8 @@ actor {
   // Chat Functionality
   type ChatMessage = {
     id : Nat;
-    senderPhoneNumber : Text;
-    receiverPhoneNumber : Text;
+    senderPhone : Text;
+    receiverPhone : Text;
     listingId : Nat;
     messageText : Text;
     timestamp : Int;
@@ -212,20 +217,17 @@ actor {
   let chatMessages = Map.empty<Nat, ChatMessage>();
 
   public shared ({ caller }) func sendMessage(
-    senderPhoneNumber : Text,
-    receiverPhoneNumber : Text,
+    senderPhone : Text,
+    receiverPhone : Text,
     listingId : Nat,
     messageText : Text,
   ) : async () {
-    // Validate inputs
-    if (senderPhoneNumber.size() == 0 or receiverPhoneNumber.size() == 0) {
+    if (senderPhone.size() == 0 or receiverPhone.size() == 0) {
       Runtime.trap("Both sender and receiver phone numbers are required");
     };
-
     if (messageText.size() == 0) {
       Runtime.trap("Message text cannot be empty");
     };
-
     switch (listings.get(listingId)) {
       case (null) {
         Runtime.trap("Listing does not exist");
@@ -233,8 +235,8 @@ actor {
       case (?_listing) {
         let message : ChatMessage = {
           id = nextMessageId;
-          senderPhoneNumber;
-          receiverPhoneNumber;
+          senderPhone;
+          receiverPhone;
           listingId;
           messageText;
           timestamp = Time.now();
@@ -255,8 +257,8 @@ actor {
     for ((_, message) in chatMessages.entries()) {
       if (
         message.listingId == listingId and (
-          (message.senderPhoneNumber == phoneNumber1 and message.receiverPhoneNumber == phoneNumber2) or
-          (message.senderPhoneNumber == phoneNumber2 and message.receiverPhoneNumber == phoneNumber1)
+          (message.senderPhone == phoneNumber1 and message.receiverPhone == phoneNumber2) or
+          (message.senderPhone == phoneNumber2 and message.receiverPhone == phoneNumber1)
         )
       ) {
         filtered.add(message);
@@ -265,11 +267,11 @@ actor {
     filtered.toArray();
   };
 
-  public shared ({ caller }) func markMessagesAsRead(senderPhoneNumber : Text, receiverPhoneNumber : Text, listingId : Nat) : async () {
+  public shared ({ caller }) func markMessagesAsRead(senderPhone : Text, receiverPhone : Text, listingId : Nat) : async () {
     for ((id, message) in chatMessages.entries()) {
       if (
-        message.senderPhoneNumber == senderPhoneNumber and
-        message.receiverPhoneNumber == receiverPhoneNumber and
+        message.senderPhone == senderPhone and
+        message.receiverPhone == receiverPhone and
         message.listingId == listingId and
         not message.isRead
       ) {
@@ -282,10 +284,10 @@ actor {
     };
   };
 
-  public query ({ caller }) func getUnreadMessages(receiverPhoneNumber : Text) : async [ChatMessage] {
+  public query ({ caller }) func getUnreadMessages(receiverPhone : Text) : async [ChatMessage] {
     let filtered = List.empty<ChatMessage>();
     for ((_, message) in chatMessages.entries()) {
-      if (message.receiverPhoneNumber == receiverPhoneNumber and not message.isRead) {
+      if (message.receiverPhone == receiverPhone and not message.isRead) {
         filtered.add(message);
       };
     };

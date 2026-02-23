@@ -10,7 +10,22 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ listing }: ProductCardProps) {
-  const imageUrl = listing.image.getDirectURL();
+  // Defensive null checks with default values
+  const title = listing.title || 'Untitled';
+  const price = listing.price ?? 0n;
+  const category = listing.category || 'Uncategorized';
+  const sellerPhone = listing.sellerPhone || 'Unknown';
+  const brand = listing.brand;
+  
+  // Handle missing or invalid imageUrl
+  let imageUrl = '/assets/generated/hero-banner.dim_1200x400.png'; // Default placeholder
+  try {
+    if (listing.imageUrl && typeof listing.imageUrl.getDirectURL === 'function') {
+      imageUrl = listing.imageUrl.getDirectURL();
+    }
+  } catch (error) {
+    console.error('[ProductCard] Error getting image URL:', error);
+  }
 
   return (
     <Link to="/listing/$id" params={{ id: listing.id.toString() }} className="group">
@@ -18,23 +33,35 @@ export default function ProductCard({ listing }: ProductCardProps) {
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
           <img
             src={imageUrl}
-            alt={listing.title}
+            alt={title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
+            onError={(e) => {
+              console.error('[ProductCard] Image failed to load:', imageUrl);
+              // Set fallback image on error
+              e.currentTarget.src = '/assets/generated/hero-banner.dim_1200x400.png';
+            }}
           />
-          <Badge className="absolute top-3 right-3 bg-background/90 text-foreground border-border">
-            {listing.category}
-          </Badge>
+          <div className="absolute top-3 right-3 flex gap-2">
+            <Badge className="bg-background/90 text-foreground border-border">
+              {category}
+            </Badge>
+          </div>
+          {category === 'Smartphones' && brand && (
+            <Badge className="absolute top-3 left-3 bg-primary/90 text-primary-foreground">
+              {brand}
+            </Badge>
+          )}
         </div>
         <CardContent className="p-4">
           <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-foreground group-hover:text-primary transition-colors">
-            {listing.title}
+            {title}
           </h3>
           <p className="text-2xl font-bold text-primary mb-2">
-            {formatPrice(listing.price)}
+            {formatPrice(price)}
           </p>
           <p className="text-sm text-muted-foreground truncate">
-            Seller: {formatPhoneNumber(listing.sellerPhoneNumber)}
+            Seller: {formatPhoneNumber(sellerPhone)}
           </p>
         </CardContent>
       </Card>

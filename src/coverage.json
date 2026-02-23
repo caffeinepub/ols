@@ -1,74 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-23T18:36:02.464Z",
+  "generatedAt": "2026-02-23T19:40:58.163Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 5,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-49",
-        "summary": "Debug and fix the ChatDialog component in frontend/src/components/ChatDialog.tsx to ensure it opens correctly when accessed from the My Chats section, properly loads conversation history, and allows users to send and receive messages",
+        "id": "REQ-74",
+        "summary": "Add the uploaded OLS logo image (IMG-20260223-WA0852.jpg) to the application as the primary branding logo, displaying it in the header/navigation area of the Layout component",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/ChatDialog.tsx"
+          "frontend/src/components/Layout.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/ChatDialog.tsx"
-        ]
-      },
-      {
-        "id": "REQ-50",
-        "summary": "Verify and fix the ConversationList component in frontend/src/components/ConversationList.tsx to ensure conversations are clickable and properly trigger the ChatDialog to open with the correct conversation context (listing ID, seller/buyer phone numbers)",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/ConversationList.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/ConversationList.tsx"
-        ]
-      },
-      {
-        "id": "REQ-51",
-        "summary": "Debug and fix the ProfilePage messages tab in frontend/src/pages/ProfilePage.tsx to ensure it correctly renders the ConversationList component and handles conversation selection/navigation without errors",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/ProfilePage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/ProfilePage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-52",
-        "summary": "Verify and fix the useConversations and useMessages query hooks in frontend/src/hooks/useQueries.ts to ensure they correctly fetch conversation data from the backend and handle loading/error states properly",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts"
-        ]
-      },
-      {
-        "id": "REQ-53",
-        "summary": "Add comprehensive error logging and user feedback throughout the chat flow (ConversationList, ChatDialog, ProfilePage messages tab) to identify and display specific issues preventing users from opening or replying to messages",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/ConversationList.tsx",
-          "frontend/src/components/ChatDialog.tsx",
-          "frontend/src/pages/ProfilePage.tsx",
-          "frontend/src/hooks/useQueries.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/ConversationList.tsx",
-          "frontend/src/components/ChatDialog.tsx",
-          "frontend/src/pages/ProfilePage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/Layout.tsx"
         ]
       }
     ]
@@ -78,10 +28,8 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/ChatDialog.tsx",
-    "frontend/src/components/ConversationList.tsx",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/ProfilePage.tsx",
+    "frontend/public/assets/generated/ols-logo.dim_400x300.png",
+    "frontend/src/components/Layout.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

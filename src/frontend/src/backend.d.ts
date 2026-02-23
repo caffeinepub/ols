@@ -18,34 +18,35 @@ export interface ProductListing {
     id: bigint;
     status: string;
     title: string;
+    sellerPhone: string;
+    createdAt: bigint;
     description: string;
-    timestamp: bigint;
+    imageUrl: ExternalBlob;
     category: string;
-    image: ExternalBlob;
+    brand?: string;
     price: bigint;
-    sellerPhoneNumber: string;
 }
 export interface ChatMessage {
     id: bigint;
-    receiverPhoneNumber: string;
+    senderPhone: string;
     listingId: bigint;
     isRead: boolean;
     messageText: string;
     timestamp: bigint;
-    senderPhoneNumber: string;
+    receiverPhone: string;
 }
 export interface backendInterface {
-    createListing(sellerPhoneNumber: string, title: string, description: string, price: bigint, category: string, image: ExternalBlob, timestamp: bigint): Promise<bigint>;
-    deleteListing(listingId: bigint, sellerPhoneNumber: string): Promise<void>;
-    editListing(listingId: bigint, sellerPhoneNumber: string, title: string, description: string, price: bigint, category: string, image: ExternalBlob): Promise<void>;
+    createListing(sellerPhone: string, title: string, description: string, price: bigint, category: string, imageUrl: ExternalBlob, createdAt: bigint, brand: string | null): Promise<bigint>;
+    deleteListing(listingId: bigint, sellerPhone: string): Promise<void>;
+    editListing(listingId: bigint, sellerPhone: string, title: string, description: string, price: bigint, category: string, imageUrl: ExternalBlob, brand: string | null): Promise<void>;
     getAllCategories(): Promise<Array<string>>;
     getAllListings(): Promise<Array<ProductListing>>;
     getConversation(phoneNumber1: string, phoneNumber2: string, listingId: bigint): Promise<Array<ChatMessage>>;
     getListing(listingId: bigint): Promise<ProductListing>;
     getListingsByCategory(category: string): Promise<Array<ProductListing>>;
-    getUnreadMessages(receiverPhoneNumber: string): Promise<Array<ChatMessage>>;
-    getUserListings(sellerPhoneNumber: string): Promise<Array<ProductListing>>;
-    markMessagesAsRead(senderPhoneNumber: string, receiverPhoneNumber: string, listingId: bigint): Promise<void>;
+    getUnreadMessages(receiverPhone: string): Promise<Array<ChatMessage>>;
+    getUserListings(sellerPhone: string): Promise<Array<ProductListing>>;
+    markMessagesAsRead(senderPhone: string, receiverPhone: string, listingId: bigint): Promise<void>;
     searchListings(searchTerm: string): Promise<Array<ProductListing>>;
-    sendMessage(senderPhoneNumber: string, receiverPhoneNumber: string, listingId: bigint, messageText: string): Promise<void>;
+    sendMessage(senderPhone: string, receiverPhone: string, listingId: bigint, messageText: string): Promise<void>;
 }

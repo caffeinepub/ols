@@ -13,7 +13,18 @@ const categoryIcons: Record<string, string> = {
   'Real Estate': '/assets/generated/icon-realestate.dim_128x128.png',
   Fashion: '/assets/generated/icon-fashion.dim_128x128.png',
   'Home & Garden': '/assets/generated/icon-home.dim_128x128.png',
+  Smartphones: '/assets/generated/smartphone-icon.dim_128x128.png',
 };
+
+// Define the order of categories with Smartphones first
+const categoryOrder = [
+  'Smartphones',
+  'Electronics',
+  'Vehicles',
+  'Real Estate',
+  'Fashion',
+  'Home & Garden',
+];
 
 export default function CategoryFilter({
   selectedCategory,
@@ -21,9 +32,19 @@ export default function CategoryFilter({
 }: CategoryFilterProps) {
   const { data: allCategories } = useCategories();
 
-  // Get unique categories
+  // Get unique categories and sort them according to the defined order
   const categories = allCategories
-    ? Array.from(new Set(allCategories)).filter(Boolean)
+    ? Array.from(new Set(allCategories))
+        .filter(Boolean)
+        .sort((a, b) => {
+          const indexA = categoryOrder.indexOf(a);
+          const indexB = categoryOrder.indexOf(b);
+          // If category is not in the order list, put it at the end
+          if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+          if (indexA === -1) return 1;
+          if (indexB === -1) return -1;
+          return indexA - indexB;
+        })
     : [];
 
   return (

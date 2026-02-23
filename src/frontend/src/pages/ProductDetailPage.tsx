@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Calendar, Phone, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Phone, MessageCircle, Smartphone } from 'lucide-react';
 import { formatPrice } from '../utils/formatPrice';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import ChatDialog from '../components/ChatDialog';
@@ -24,7 +24,7 @@ export default function ProductDetailPage() {
       toast.error('Please login to chat with the seller');
       return;
     }
-    if (phoneNumber === listing?.sellerPhoneNumber) {
+    if (phoneNumber === listing?.sellerPhone) {
       toast.error('You cannot chat with yourself');
       return;
     }
@@ -35,12 +35,12 @@ export default function ProductDetailPage() {
     return (
       <div className="container max-w-5xl py-8">
         <Skeleton className="h-10 w-32 mb-6" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Skeleton className="aspect-square rounded-lg" />
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-6 w-1/2" />
-            <Skeleton className="h-24 w-full" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Skeleton className="aspect-square w-full" />
+          <div className="space-y-6">
+            <Skeleton className="h-12 w-3/4" />
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-32 w-full" />
           </div>
         </div>
       </div>
@@ -50,14 +50,14 @@ export default function ProductDetailPage() {
   if (!listing) {
     return (
       <div className="container max-w-5xl py-8">
-        <p className="text-center text-muted-foreground">Listing not found</p>
+        <p className="text-center text-muted-foreground">Ad not found</p>
       </div>
     );
   }
 
-  const imageUrl = listing.image.getDirectURL();
-  const date = new Date(Number(listing.timestamp));
-  const isOwnListing = phoneNumber === listing.sellerPhoneNumber;
+  const imageUrl = listing.imageUrl.getDirectURL();
+  const date = new Date(Number(listing.createdAt) / 1000000);
+  const isOwnListing = phoneNumber === listing.sellerPhone;
 
   return (
     <div className="container max-w-5xl py-8">
@@ -70,8 +70,9 @@ export default function ProductDetailPage() {
         Back to Listings
       </Button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="relative aspect-square rounded-lg overflow-hidden bg-muted">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Image Section */}
+        <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
           <img
             src={imageUrl}
             alt={listing.title}
@@ -79,60 +80,66 @@ export default function ProductDetailPage() {
           />
         </div>
 
+        {/* Details Section */}
         <div className="space-y-6">
           <div>
-            <Badge className="mb-3">{listing.category}</Badge>
-            <h1 className="text-4xl font-bold mb-4">{listing.title}</h1>
-            <p className="text-4xl font-bold text-primary mb-6">
-              {formatPrice(listing.price)}
-            </p>
+            <div className="flex items-start justify-between mb-2">
+              <h1 className="text-3xl font-bold text-foreground">{listing.title}</h1>
+              <Badge variant="outline" className="text-sm">
+                {listing.category}
+              </Badge>
+            </div>
+            {listing.category === 'Smartphones' && listing.brand && (
+              <div className="flex items-center gap-2 mb-3">
+                <Smartphone className="h-4 w-4 text-primary" />
+                <Badge variant="secondary" className="text-sm">
+                  {listing.brand}
+                </Badge>
+              </div>
+            )}
+            <p className="text-4xl font-bold text-primary">{formatPrice(listing.price)}</p>
           </div>
 
           <Card>
             <CardContent className="pt-6">
-              <h2 className="text-lg font-semibold mb-3">Description</h2>
-              <p className="text-muted-foreground whitespace-pre-wrap">
-                {listing.description}
-              </p>
+              <h2 className="text-lg font-semibold mb-3 text-foreground">Description</h2>
+              <p className="text-muted-foreground whitespace-pre-wrap">{listing.description}</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6 space-y-4">
-              <h2 className="text-lg font-semibold mb-3">Seller Information</h2>
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Contact:</span>
-                <span className="font-medium">
-                  {formatPhoneNumber(listing.sellerPhoneNumber)}
-                </span>
+            <CardContent className="pt-6 space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Seller Information</h2>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Phone className="h-4 w-4" />
+                <span>{formatPhoneNumber(listing.sellerPhone)}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Posted:</span>
-                <span>{date.toLocaleDateString()}</span>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Calendar className="h-4 w-4" />
+                <span>Posted on {date.toLocaleDateString()}</span>
               </div>
-              {!isOwnListing && (
-                <Button
-                  onClick={handleChatClick}
-                  className="w-full gap-2 mt-4"
-                  size="lg"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  Chat with Seller
-                </Button>
-              )}
             </CardContent>
           </Card>
+
+          {!isOwnListing && (
+            <Button
+              onClick={handleChatClick}
+              className="w-full gap-2"
+              size="lg"
+            >
+              <MessageCircle className="h-5 w-5" />
+              Chat with Seller
+            </Button>
+          )}
         </div>
       </div>
 
-      {listing && (
+      {listing && !isOwnListing && (
         <ChatDialog
           open={chatDialogOpen}
           onOpenChange={setChatDialogOpen}
           listingId={listing.id}
-          sellerPhoneNumber={listing.sellerPhoneNumber}
+          sellerPhoneNumber={listing.sellerPhone}
           listingTitle={listing.title}
         />
       )}

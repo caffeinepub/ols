@@ -1,13 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the My Chats interface to enable users to open conversations and reply to messages.
+**Goal:** Add the OLS logo to the application header for brand identity.
 
 **Planned changes:**
-- Debug and fix ChatDialog component to open correctly and handle message sending
-- Fix ConversationList component to properly trigger ChatDialog with correct conversation context
-- Debug ProfilePage messages tab to correctly render conversations and handle navigation
-- Verify and fix useConversations and useMessages query hooks for proper data fetching
-- Add comprehensive error logging and user feedback throughout the chat flow
+- Add the uploaded OLS logo image to the application assets
+- Display the OLS logo in the header/navigation area of the Layout component
+- Make the logo clickable to navigate to the home page
+- Ensure the logo is properly sized and responsive on mobile and desktop
 
-**User-visible outcome:** Users can successfully access their chats from the My Chats section, view conversation history, and send/reply to messages without errors.
+**User-visible outcome:** The OLS marketplace logo with the shopping cart icon and colorful text appears in the application header, replacing or complementing the text-only "OLS" branding.

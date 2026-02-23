@@ -10,14 +10,58 @@ export function useListings() {
   return useQuery<ProductListing[]>({
     queryKey: ['listings'],
     queryFn: async () => {
+      console.log('[useListings] Query function called', {
+        timestamp: new Date().toISOString(),
+        actorAvailable: !!actor,
+        isFetching,
+      });
+
       if (!actor) {
-        console.log('useListings - Actor not available');
+        console.log('[useListings] Actor not available, returning empty array');
         return [];
       }
-      console.log('useListings - Fetching all listings');
-      const listings = await actor.getAllListings();
-      console.log('useListings - Retrieved listings:', listings.length);
-      return listings;
+
+      try {
+        console.log('[useListings] Calling backend getAllListings...');
+        const listings = await actor.getAllListings();
+        
+        console.log('[useListings] Backend response received:', {
+          timestamp: new Date().toISOString(),
+          listingsCount: listings?.length ?? 0,
+          isArray: Array.isArray(listings),
+          listings: listings,
+        });
+
+        // Validate response is an array
+        if (!Array.isArray(listings)) {
+          console.error('[useListings] Response is not an array:', typeof listings);
+          return [];
+        }
+
+        // Log each listing structure
+        listings.forEach((listing, index) => {
+          console.log(`[useListings] Listing ${index}:`, {
+            id: listing.id?.toString(),
+            title: listing.title,
+            price: listing.price?.toString(),
+            category: listing.category,
+            brand: listing.brand,
+            sellerPhone: listing.sellerPhone,
+            hasImageUrl: !!listing.imageUrl,
+            imageUrlType: typeof listing.imageUrl,
+          });
+        });
+
+        return listings;
+      } catch (error) {
+        console.error('[useListings] Error fetching listings:', {
+          timestamp: new Date().toISOString(),
+          error,
+          errorMessage: error instanceof Error ? error.message : 'Unknown error',
+          errorStack: error instanceof Error ? error.stack : undefined,
+        });
+        throw error;
+      }
     },
     enabled: !!actor && !isFetching,
     staleTime: 0,
@@ -36,6 +80,7 @@ export function useCreateListing() {
       description: string;
       price: number;
       category: string;
+      brand?: string;
       image: File;
     }) => {
       if (!actor) {
@@ -51,6 +96,7 @@ export function useCreateListing() {
         description: data.description,
         price: data.price,
         category: data.category,
+        brand: data.brand,
         imageSize: data.image.size,
         phoneNumber,
       });
@@ -66,7 +112,8 @@ export function useCreateListing() {
         BigInt(data.price),
         data.category,
         imageBlob,
-        BigInt(Date.now() * 1000000)
+        BigInt(Date.now() * 1000000),
+        data.brand || null
       );
 
       console.log('useCreateListing - Listing created with ID:', listingId);
@@ -130,6 +177,7 @@ export function useEditListing() {
       description: string;
       price: bigint;
       category: string;
+      brand?: string;
       image: ExternalBlob;
     }) => {
       if (!actor || !phoneNumber) {
@@ -143,7 +191,8 @@ export function useEditListing() {
         data.description,
         data.price,
         data.category,
-        data.image
+        data.image,
+        data.brand || null
       );
     },
     onSuccess: () => {

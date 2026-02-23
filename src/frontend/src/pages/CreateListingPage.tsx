@@ -18,7 +18,8 @@ import { useCreateListing } from '../hooks/useQueries';
 import { useMobileAuth } from '../hooks/useMobileAuth';
 import { toast } from 'sonner';
 
-const CATEGORIES = ['Electronics', 'Fashion', 'Home', 'Vehicles', 'Real Estate'];
+const CATEGORIES = ['Smartphones', 'Electronics', 'Fashion', 'Home & Garden', 'Vehicles', 'Real Estate'];
+const MOBILE_BRANDS = ['Apple', 'Samsung', 'OnePlus', 'Xiaomi', 'Realme', 'Vivo', 'Oppo', 'Other'];
 
 export function CreateListingPage() {
   const navigate = useNavigate();
@@ -29,9 +30,18 @@ export function CreateListingPage() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory);
+    // Reset brand when category changes away from Smartphones
+    if (newCategory !== 'Smartphones') {
+      setBrand('');
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -67,6 +77,10 @@ export function CreateListingPage() {
       newErrors.push('You must be logged in to create an ad');
     }
 
+    if (!category) {
+      newErrors.push('Category is required');
+    }
+
     if (!title.trim()) {
       newErrors.push('Title is required');
     } else if (title.length > 100) {
@@ -81,10 +95,6 @@ export function CreateListingPage() {
 
     if (!price || parseFloat(price) <= 0) {
       newErrors.push('Valid price is required');
-    }
-
-    if (!category) {
-      newErrors.push('Category is required');
     }
 
     if (!image) {
@@ -109,6 +119,7 @@ export function CreateListingPage() {
         description: description.trim(),
         price: parseFloat(price),
         category,
+        brand: category === 'Smartphones' && brand ? brand : undefined,
         image: image!,
       });
 
@@ -167,6 +178,44 @@ export function CreateListingPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Category - First Field */}
+            <div className="space-y-2">
+              <Label htmlFor="category">
+                Category <span className="text-destructive">*</span>
+              </Label>
+              <Select value={category} onValueChange={handleCategoryChange} disabled={createListing.isPending}>
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Brand - Second Field (Only show for Smartphones category) */}
+            {category === 'Smartphones' && (
+              <div className="space-y-2">
+                <Label htmlFor="brand">Brand</Label>
+                <Select value={brand} onValueChange={setBrand} disabled={createListing.isPending}>
+                  <SelectTrigger id="brand">
+                    <SelectValue placeholder="Select a brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {MOBILE_BRANDS.map((brandOption) => (
+                      <SelectItem key={brandOption} value={brandOption}>
+                        {brandOption}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             {/* Title */}
             <div className="space-y-2">
               <Label htmlFor="title">
@@ -219,25 +268,6 @@ export function CreateListingPage() {
               />
             </div>
 
-            {/* Category */}
-            <div className="space-y-2">
-              <Label htmlFor="category">
-                Category <span className="text-destructive">*</span>
-              </Label>
-              <Select value={category} onValueChange={setCategory} disabled={createListing.isPending}>
-                <SelectTrigger id="category">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORIES.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Image Upload */}
             <div className="space-y-2">
               <Label htmlFor="image">
@@ -265,47 +295,43 @@ export function CreateListingPage() {
                 <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border p-12">
                   <label
                     htmlFor="image"
-                    className="flex cursor-pointer flex-col items-center space-y-2"
+                    className="flex cursor-pointer flex-col items-center gap-2 text-center"
                   >
-                    <Upload className="h-12 w-12 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">
-                      Click to upload image (max 5MB)
+                    <Upload className="h-10 w-10 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                      Click to upload image
                     </span>
-                    <input
-                      id="image"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="hidden"
-                      disabled={createListing.isPending}
-                    />
+                    <span className="text-xs text-muted-foreground">
+                      PNG, JPG up to 5MB
+                    </span>
                   </label>
+                  <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    disabled={createListing.isPending}
+                  />
                 </div>
               )}
             </div>
 
             {/* Submit Button */}
-            <div className="flex gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => navigate({ to: '/' })}
-                disabled={createListing.isPending}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={createListing.isPending} className="flex-1">
-                {createListing.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  'Create Ad'
-                )}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={createListing.isPending}
+            >
+              {createListing.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Ad...
+                </>
+              ) : (
+                'Create Ad'
+              )}
+            </Button>
           </form>
         </CardContent>
       </Card>

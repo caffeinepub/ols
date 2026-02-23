@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useMobileAuth } from '../hooks/useMobileAuth';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogIn, LogOut, Package } from 'lucide-react';
+import { PlusCircle, User, LogIn, LogOut } from 'lucide-react';
 import MobileLoginDialog from './MobileLoginDialog';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 
@@ -18,9 +18,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <Package className="h-7 w-7 text-primary" />
-            <span className="text-2xl font-bold text-primary">OLS</span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/assets/generated/ols-logo.dim_400x300.png" 
+              alt="OLS Marketplace" 
+              className="h-10 w-auto sm:h-12"
+            />
           </Link>
 
           <nav className="flex items-center gap-2">
