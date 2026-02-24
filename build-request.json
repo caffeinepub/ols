@@ -1,0 +1,44 @@
+{
+  "kind": "build_request",
+  "title": "Add OLS logo to application branding",
+  "projectName": "OLS Marketplace",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-74",
+      "text": "Add the uploaded OLS logo image (IMG-20260223-WA0852.jpg) to the application as the primary branding logo, displaying it in the header/navigation area of the Layout component",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Add this logo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The OLS logo image is rendered as a static asset in frontend/public/assets/generated",
+        "The Layout component header displays the OLS logo in place of or alongside the current 'OLS' text branding",
+        "The logo has appropriate sizing and spacing to maintain visual balance in the header",
+        "The logo is clickable and navigates to the home page when clicked",
+        "The logo displays correctly on both mobile and desktop viewports"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify the mobile authentication hook (useMobileAuth.ts)",
+    "Do not modify the actor hook (useActor.ts)",
+    "Do not edit immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/main.tsx, frontend/src/components/ui"
+  ],
+  "nonGoals": [
+    "Changing the application name from 'OLS'",
+    "Redesigning the entire header layout",
+    "Adding multiple logo variants or alternate logos"
+  ],
+  "imageRequirements": {
+    "required": [
+      "OLS marketplace logo with shopping cart icon, colorful 'OLS' text (purple, orange, green), and magnifying glass, featuring 'On-Line Selling' tagline below. Use the uploaded image IMG-20260223-WA0852.jpg as reference (ols-logo.dim_400x300.png)"
+    ],
+    "edits": []
+  }
+}

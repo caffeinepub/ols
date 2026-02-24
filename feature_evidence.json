@@ -1,0 +1,24 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-the-uploaded-ols-logo-image-img-20260223-wa0852-jpg-to-the-application-as-the-primary-branding-logo-displaying-it-in-the-header-navigation-area-of-the-layout-component",
+      "featureTitle": "Add the uploaded OLS logo image (IMG-20260223-WA0852.jpg) to the application as the primary branding logo, displaying it in the header/navigation area of the Layout component",
+      "files": [
+        "frontend/src/components/Layout.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-74"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

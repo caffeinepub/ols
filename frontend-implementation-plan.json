@@ -1,0 +1,25 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add OLS logo to application branding",
+  "requirements": [
+    {
+      "id": "REQ-74",
+      "summary": "Add the OLS logo image to the Layout component header as primary branding, replacing or complementing the current text logo with appropriate sizing and clickable navigation to home",
+      "acceptanceCriteria": [
+        "The OLS logo image is rendered as a static asset in frontend/public/assets/generated",
+        "The Layout component header displays the OLS logo in place of or alongside the current 'OLS' text branding",
+        "The logo has appropriate sizing and spacing to maintain visual balance in the header",
+        "The logo is clickable and navigates to the home page when clicked",
+        "The logo displays correctly on both mobile and desktop viewports"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Replace the current text-based 'OLS' branding in the header with an img element that references the generated logo asset at frontend/public/assets/generated/ols-logo.dim_400x300.png. Wrap the logo in a Link component that navigates to '/' when clicked. Apply responsive sizing (height constraint for desktop, smaller for mobile) and appropriate spacing to maintain visual balance. Ensure the logo renders correctly in both light and dark theme modes."
+        }
+      ]
+    }
+  ]
+}

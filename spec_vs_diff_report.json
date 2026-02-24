@@ -1,0 +1,23 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-23T19:40:58.160Z",
+  "summary": "The diff implements REQ-74 by adding the OLS logo to the Layout component header. The logo is displayed as a clickable image that navigates to the home page, with responsive sizing for mobile and desktop viewports. However, there is no evidence that the logo image file was added to frontend/public/assets/generated as required.",
+  "missing_requirements": [
+    {
+      "id": "REQ-74",
+      "requirement": "The OLS logo image is rendered as a static asset in frontend/public/assets/generated",
+      "reason": "No evidence in the diff that the logo image file (ols-logo.dim_400x300.png) was added to the frontend/public/assets/generated directory. The diff shows 0 added files, but the Layout component references the path '/assets/generated/ols-logo.dim_400x300.png'.",
+      "evidence": [
+        "frontend/src/components/Layout.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [],
+  "confidence": 0.85,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/Layout.tsx",
+    "project_state.json"
+  ]
+}
