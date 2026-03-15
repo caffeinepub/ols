@@ -1,20 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Send, Phone, AlertCircle, X } from 'lucide-react';
-import { useSendMessage, useConversation, useMarkMessagesAsRead } from '../hooks/useQueries';
-import { useMobileAuth } from '../hooks/useMobileAuth';
-import { formatPhoneNumber } from '../utils/formatPhoneNumber';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertCircle, Phone, Send, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useMobileAuth } from "../hooks/useMobileAuth";
+import {
+  useConversation,
+  useMarkMessagesAsRead,
+  useSendMessage,
+} from "../hooks/useQueries";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
 
 interface ChatDialogProps {
   open: boolean;
@@ -31,17 +35,22 @@ export default function ChatDialog({
   sellerPhoneNumber,
   listingTitle,
 }: ChatDialogProps) {
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { phoneNumber } = useMobileAuth();
   const sendMessage = useSendMessage();
-  const { data: messages, isLoading, error } = useConversation(sellerPhoneNumber, listingId);
+  const {
+    data: messages,
+    isLoading,
+    error,
+  } = useConversation(sellerPhoneNumber, listingId);
   const markAsRead = useMarkMessagesAsRead();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesLengthRef = useRef(0);
 
   // Log dialog state for debugging
   useEffect(() => {
-    console.log('ChatDialog - State changed:', {
+    console.log("ChatDialog - State changed:", {
       open,
       listingId: listingId.toString(),
       sellerPhoneNumber,
@@ -51,49 +60,62 @@ export default function ChatDialog({
       isLoading,
       error: error?.message,
     });
-  }, [open, listingId, sellerPhoneNumber, listingTitle, phoneNumber, messages, isLoading, error]);
+  }, [
+    open,
+    listingId,
+    sellerPhoneNumber,
+    listingTitle,
+    phoneNumber,
+    messages,
+    isLoading,
+    error,
+  ]);
 
   // Mark messages as read when dialog opens
   useEffect(() => {
     if (open && sellerPhoneNumber && listingId && phoneNumber) {
-      console.log('ChatDialog - Marking messages as read');
+      console.log("ChatDialog - Marking messages as read");
       markAsRead.mutate({
         senderPhoneNumber: sellerPhoneNumber,
         listingId,
       });
     }
-  }, [open, sellerPhoneNumber, listingId, phoneNumber]);
+  }, [open, sellerPhoneNumber, listingId, phoneNumber, markAsRead.mutate]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    const newLength = messages?.length ?? 0;
+    if (newLength !== messagesLengthRef.current) {
+      messagesLengthRef.current = newLength;
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
     }
-  }, [messages]);
+  });
 
   // Clear error when dialog closes
   useEffect(() => {
     if (!open) {
       setErrorMessage(null);
-      console.log('ChatDialog - Dialog closed, cleared error');
+      console.log("ChatDialog - Dialog closed, cleared error");
     }
   }, [open]);
 
   const handleSendMessage = async () => {
     if (!messageText.trim()) {
-      setErrorMessage('Please enter a message');
+      setErrorMessage("Please enter a message");
       return;
     }
 
     if (!phoneNumber) {
-      setErrorMessage('You must be logged in to send messages');
+      setErrorMessage("You must be logged in to send messages");
       return;
     }
 
     // Clear any previous errors
     setErrorMessage(null);
 
-    console.log('ChatDialog - Attempting to send message:', {
+    console.log("ChatDialog - Attempting to send message:", {
       receiverPhoneNumber: sellerPhoneNumber,
       listingId: listingId.toString(),
       messageText: messageText.trim(),
@@ -105,18 +127,21 @@ export default function ChatDialog({
         listingId,
         messageText: messageText.trim(),
       });
-      setMessageText('');
-      console.log('ChatDialog - Message sent successfully');
-    } catch (error) {
+      setMessageText("");
+      console.log("ChatDialog - Message sent successfully");
+    } catch (err) {
       // Display the error message to the user
-      const errorMsg = error instanceof Error ? error.message : 'Failed to send message. Please try again.';
+      const errorMsg =
+        err instanceof Error
+          ? err.message
+          : "Failed to send message. Please try again.";
       setErrorMessage(errorMsg);
-      console.error('ChatDialog - Error sending message:', error);
+      console.error("ChatDialog - Error sending message:", err);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -144,6 +169,7 @@ export default function ChatDialog({
             {isLoading ? (
               <div className="space-y-4 p-4">
                 {[...Array(3)].map((_, i) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
                   <Skeleton key={i} className="h-16 w-3/4" />
                 ))}
               </div>
@@ -165,13 +191,13 @@ export default function ChatDialog({
                   return (
                     <div
                       key={message.id.toString()}
-                      className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
                     >
                       <div
                         className={`max-w-[70%] rounded-lg px-4 py-2 ${
                           isOwnMessage
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted text-foreground'
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-foreground"
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap break-words">
@@ -180,13 +206,13 @@ export default function ChatDialog({
                         <p
                           className={`text-xs mt-1 ${
                             isOwnMessage
-                              ? 'text-primary-foreground/70'
-                              : 'text-muted-foreground'
+                              ? "text-primary-foreground/70"
+                              : "text-muted-foreground"
                           }`}
                         >
                           {date.toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
+                            hour: "2-digit",
+                            minute: "2-digit",
                           })}
                         </p>
                       </div>

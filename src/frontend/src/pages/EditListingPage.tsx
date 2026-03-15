@@ -1,31 +1,53 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from '@tanstack/react-router';
-import { useListing, useEditListing } from '../hooks/useQueries';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { toast } from 'sonner';
-import { ExternalBlob } from '../backend';
-import { ArrowLeft, Upload, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { ArrowLeft, Upload, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { ExternalBlob } from "../backend";
+import { useEditListing, useListing } from "../hooks/useQueries";
 
-const CATEGORIES = ['Smartphones', 'Electronics', 'Fashion', 'Home & Garden', 'Vehicles', 'Real Estate'];
-const MOBILE_BRANDS = ['Apple', 'Samsung', 'OnePlus', 'Xiaomi', 'Realme', 'Vivo', 'Oppo', 'Other'];
+const CATEGORIES = [
+  "Smartphones",
+  "Electronics",
+  "Fashion",
+  "Home & Garden",
+  "Vehicles",
+  "Real Estate",
+];
+const MOBILE_BRANDS = [
+  "Apple",
+  "Samsung",
+  "OnePlus",
+  "Xiaomi",
+  "Realme",
+  "Vivo",
+  "Oppo",
+  "Other",
+];
 
 export default function EditListingPage() {
-  const { id } = useParams({ from: '/edit-listing/$id' });
+  const { id } = useParams({ from: "/edit-listing/$id" });
   const navigate = useNavigate();
   const { data: listing, isLoading } = useListing(BigInt(id));
   const editListing = useEditListing();
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [brand, setBrand] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -35,7 +57,7 @@ export default function EditListingPage() {
       setDescription(listing.description);
       setPrice(listing.price.toString());
       setCategory(listing.category);
-      setBrand(listing.brand || '');
+      setBrand(listing.brand || "");
       setImagePreview(listing.imageUrl.getDirectURL());
     }
   }, [listing]);
@@ -43,8 +65,8 @@ export default function EditListingPage() {
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
     // Reset brand when category changes away from Smartphones
-    if (newCategory !== 'Smartphones') {
-      setBrand('');
+    if (newCategory !== "Smartphones") {
+      setBrand("");
     }
   };
 
@@ -52,12 +74,12 @@ export default function EditListingPage() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size must be less than 5MB');
+        toast.error("Image size must be less than 5MB");
         return;
       }
 
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please select a valid image file');
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select a valid image file");
         return;
       }
 
@@ -99,16 +121,16 @@ export default function EditListingPage() {
         listingId: listing.id,
         title,
         description,
-        price: BigInt(Math.round(parseFloat(price))),
+        price: BigInt(Math.round(Number.parseFloat(price))),
         category,
-        brand: category === 'Smartphones' && brand ? brand : undefined,
+        brand: category === "Smartphones" && brand ? brand : undefined,
         image: imageBlob,
       });
 
-      toast.success('Ad updated successfully!');
-      navigate({ to: '/profile' });
+      toast.success("Ad updated successfully!");
+      navigate({ to: "/profile" });
     } catch (error) {
-      toast.error('Failed to update ad');
+      toast.error("Failed to update ad");
       console.error(error);
     }
   };
@@ -143,7 +165,7 @@ export default function EditListingPage() {
     <div className="container max-w-3xl py-8">
       <Button
         variant="ghost"
-        onClick={() => navigate({ to: '/profile' })}
+        onClick={() => navigate({ to: "/profile" })}
         className="mb-6 gap-2"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -161,7 +183,11 @@ export default function EditListingPage() {
               <Label htmlFor="category">
                 Category <span className="text-destructive">*</span>
               </Label>
-              <Select value={category} onValueChange={handleCategoryChange} disabled={editListing.isPending}>
+              <Select
+                value={category}
+                onValueChange={handleCategoryChange}
+                disabled={editListing.isPending}
+              >
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
@@ -176,10 +202,14 @@ export default function EditListingPage() {
             </div>
 
             {/* Brand - Only show for Smartphones category */}
-            {category === 'Smartphones' && (
+            {category === "Smartphones" && (
               <div className="space-y-2">
                 <Label htmlFor="brand">Brand</Label>
-                <Select value={brand} onValueChange={setBrand} disabled={editListing.isPending}>
+                <Select
+                  value={brand}
+                  onValueChange={setBrand}
+                  disabled={editListing.isPending}
+                >
                   <SelectTrigger id="brand">
                     <SelectValue placeholder="Select a brand" />
                   </SelectTrigger>
@@ -208,7 +238,9 @@ export default function EditListingPage() {
                 required
                 disabled={editListing.isPending}
               />
-              <p className="text-xs text-muted-foreground">{title.length}/100 characters</p>
+              <p className="text-xs text-muted-foreground">
+                {title.length}/100 characters
+              </p>
             </div>
 
             {/* Description */}
@@ -323,7 +355,7 @@ export default function EditListingPage() {
               className="w-full"
               disabled={editListing.isPending}
             >
-              {editListing.isPending ? 'Updating Ad...' : 'Update Ad'}
+              {editListing.isPending ? "Updating Ad..." : "Update Ad"}
             </Button>
           </form>
         </CardContent>

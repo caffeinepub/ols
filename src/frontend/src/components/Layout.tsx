@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
-import { useMobileAuth } from '../hooks/useMobileAuth';
-import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogIn, LogOut } from 'lucide-react';
-import MobileLoginDialog from './MobileLoginDialog';
-import { formatPhoneNumber } from '../utils/formatPhoneNumber';
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { LogIn, LogOut, PlusCircle, User } from "lucide-react";
+import { useState } from "react";
+import { useMobileAuth } from "../hooks/useMobileAuth";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
+import MobileLoginDialog from "./MobileLoginDialog";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { phoneNumber, logout, isAuthenticated } = useMobileAuth();
@@ -19,9 +19,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img 
-              src="/assets/generated/ols-logo.dim_400x300.png" 
-              alt="OLS Marketplace" 
+            <img
+              src="/assets/generated/ols-logo.dim_400x300.png"
+              alt="OLS Marketplace"
               className="h-10 w-auto sm:h-12"
             />
           </Link>
@@ -43,7 +43,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
                 <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted text-sm">
                   <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{formatPhoneNumber(phoneNumber!)}</span>
+                  <span className="font-medium">
+                    {formatPhoneNumber(phoneNumber!)}
+                  </span>
                 </div>
                 <Button
                   variant="ghost"
@@ -81,7 +83,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <span>Built with ❤️ using</span>
               <a
                 href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(
-                  typeof window !== 'undefined' ? window.location.hostname : 'ols-marketplace'
+                  typeof window !== "undefined"
+                    ? window.location.hostname
+                    : "ols-marketplace",
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -94,7 +98,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
 
-      <MobileLoginDialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen} />
+      <MobileLoginDialog
+        open={loginDialogOpen}
+        onOpenChange={setLoginDialogOpen}
+      />
     </div>
   );
 }

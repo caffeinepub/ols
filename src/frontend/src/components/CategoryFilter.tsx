@@ -1,6 +1,6 @@
-import { useCategories } from '../hooks/useQueries';
-import { Button } from '@/components/ui/button';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useCategories } from "../hooks/useQueries";
 
 interface CategoryFilterProps {
   selectedCategory: string | null;
@@ -8,22 +8,22 @@ interface CategoryFilterProps {
 }
 
 const categoryIcons: Record<string, string> = {
-  Electronics: '/assets/generated/icon-electronics.dim_128x128.png',
-  Vehicles: '/assets/generated/icon-vehicles.dim_128x128.png',
-  'Real Estate': '/assets/generated/icon-realestate.dim_128x128.png',
-  Fashion: '/assets/generated/icon-fashion.dim_128x128.png',
-  'Home & Garden': '/assets/generated/icon-home.dim_128x128.png',
-  Smartphones: '/assets/generated/smartphone-icon.dim_128x128.png',
+  Electronics: "/assets/generated/icon-electronics.dim_128x128.png",
+  Vehicles: "/assets/generated/icon-vehicles.dim_128x128.png",
+  "Real Estate": "/assets/generated/icon-realestate.dim_128x128.png",
+  Fashion: "/assets/generated/icon-fashion.dim_128x128.png",
+  "Home & Garden": "/assets/generated/icon-home.dim_128x128.png",
+  Smartphones: "/assets/generated/smartphone-icon.dim_128x128.png",
 };
 
 // Define the order of categories with Smartphones first
 const categoryOrder = [
-  'Smartphones',
-  'Electronics',
-  'Vehicles',
-  'Real Estate',
-  'Fashion',
-  'Home & Garden',
+  "Smartphones",
+  "Electronics",
+  "Vehicles",
+  "Real Estate",
+  "Fashion",
+  "Home & Garden",
 ];
 
 export default function CategoryFilter({
@@ -53,7 +53,7 @@ export default function CategoryFilter({
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex gap-3 pb-4">
           <Button
-            variant={selectedCategory === null ? 'default' : 'outline'}
+            variant={selectedCategory === null ? "default" : "outline"}
             onClick={() => onSelectCategory(null)}
             className="shrink-0"
           >
@@ -62,7 +62,7 @@ export default function CategoryFilter({
           {categories.map((category) => (
             <Button
               key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
+              variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => onSelectCategory(category)}
               className="shrink-0 gap-2"
             >

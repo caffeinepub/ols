@@ -1,18 +1,22 @@
-import { useState, useMemo } from 'react';
-import { useNavigate, useSearch } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Edit, Trash2, MessageCircle } from 'lucide-react';
-import { useUserListings, useDeleteListing, useUnreadMessages } from '../hooks/useQueries';
-import { useMobileAuth } from '../hooks/useMobileAuth';
-import { formatPrice } from '../utils/formatPrice';
-import { formatPhoneNumber } from '../utils/formatPhoneNumber';
-import ChatDialog from '../components/ChatDialog';
-import { toast } from 'sonner';
-import type { ChatMessage } from '../backend';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { Edit, MessageCircle, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import type { ChatMessage } from "../backend";
+import ChatDialog from "../components/ChatDialog";
+import { useMobileAuth } from "../hooks/useMobileAuth";
+import {
+  useDeleteListing,
+  useUnreadMessages,
+  useUserListings,
+} from "../hooks/useQueries";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
+import { formatPrice } from "../utils/formatPrice";
 
 interface ConversationInfo {
   listingId: bigint;
@@ -25,10 +29,11 @@ interface ConversationInfo {
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const search = useSearch({ from: '/profile' });
+  const search = useSearch({ from: "/profile" });
   const { phoneNumber } = useMobileAuth();
   const { data: listings = [], isLoading: listingsLoading } = useUserListings();
-  const { data: unreadMessages = [], isLoading: messagesLoading } = useUnreadMessages();
+  const { data: unreadMessages = [], isLoading: messagesLoading } =
+    useUnreadMessages();
   const deleteListing = useDeleteListing();
   const [chatDialogOpen, setChatDialogOpen] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState<{
@@ -37,9 +42,9 @@ export default function ProfilePage() {
     listingTitle: string;
   } | null>(null);
 
-  const activeTab = (search as { tab?: string })?.tab || 'ads';
+  const activeTab = (search as { tab?: string })?.tab || "ads";
 
-  console.log('ProfilePage - Unread messages:', {
+  console.log("ProfilePage - Unread messages:", {
     count: unreadMessages.length,
     messages: unreadMessages,
   });
@@ -48,11 +53,11 @@ export default function ProfilePage() {
   const conversations = useMemo(() => {
     const conversationMap = new Map<string, ConversationInfo>();
 
-    unreadMessages.forEach((msg) => {
+    for (const msg of unreadMessages) {
       // Determine the other person in the conversation
       const isReceived = msg.receiverPhone === phoneNumber;
       const otherPhone = isReceived ? msg.senderPhone : msg.receiverPhone;
-      
+
       // Create a unique key for this conversation
       const key = `${msg.listingId}-${msg.senderPhone}`;
 
@@ -75,30 +80,30 @@ export default function ProfilePage() {
           existing.unreadCount++;
         }
       }
-    });
+    }
 
-    const result = Array.from(conversationMap.values()).sort(
-      (a, b) => Number(b.timestamp - a.timestamp)
+    const result = Array.from(conversationMap.values()).sort((a, b) =>
+      Number(b.timestamp - a.timestamp),
     );
 
-    console.log('ProfilePage - Processed conversations:', result);
+    console.log("ProfilePage - Processed conversations:", result);
     return result;
   }, [unreadMessages, phoneNumber]);
 
   const handleDeleteListing = async (listingId: bigint) => {
-    if (confirm('Are you sure you want to delete this ad?')) {
+    if (confirm("Are you sure you want to delete this ad?")) {
       try {
         await deleteListing.mutateAsync(listingId);
-        toast.success('Ad deleted successfully');
+        toast.success("Ad deleted successfully");
       } catch (error) {
-        toast.error('Failed to delete ad');
+        toast.error("Failed to delete ad");
         console.error(error);
       }
     }
   };
 
   const handleConversationClick = (conv: ConversationInfo) => {
-    console.log('ProfilePage - Opening conversation:', conv);
+    console.log("ProfilePage - Opening conversation:", conv);
     setSelectedConversation({
       listingId: conv.listingId,
       otherPhone: conv.otherPhone,
@@ -112,17 +117,25 @@ export default function ProfilePage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">My Profile</h1>
         <p className="text-muted-foreground">
-          Logged in as {formatPhoneNumber(phoneNumber || '')}
+          Logged in as {formatPhoneNumber(phoneNumber || "")}
         </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={(value) => navigate({ to: '/profile', search: { tab: value } })}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) =>
+          navigate({ to: "/profile", search: { tab: value } })
+        }
+      >
         <TabsList className="grid w-full grid-cols-2 mb-8">
           <TabsTrigger value="ads">My Ads</TabsTrigger>
           <TabsTrigger value="messages" className="relative">
             Messages
             {conversations.length > 0 && (
-              <Badge variant="destructive" className="ml-2 h-5 min-w-5 rounded-full px-1 text-xs">
+              <Badge
+                variant="destructive"
+                className="ml-2 h-5 min-w-5 rounded-full px-1 text-xs"
+              >
                 {conversations.reduce((sum, c) => sum + c.unreadCount, 0)}
               </Badge>
             )}
@@ -133,14 +146,17 @@ export default function ProfilePage() {
           {listingsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(3)].map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
                 <Skeleton key={i} className="h-64" />
               ))}
             </div>
           ) : listings.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground mb-4">You haven't posted any ads yet</p>
-                <Button onClick={() => navigate({ to: '/create-listing' })}>
+                <p className="text-muted-foreground mb-4">
+                  You haven't posted any ads yet
+                </p>
+                <Button onClick={() => navigate({ to: "/create-listing" })}>
                   Post Your First Ad
                 </Button>
               </CardContent>
@@ -172,7 +188,10 @@ export default function ProfilePage() {
                         size="sm"
                         className="flex-1"
                         onClick={() =>
-                          navigate({ to: '/edit-listing/$id', params: { id: listing.id.toString() } })
+                          navigate({
+                            to: "/edit-listing/$id",
+                            params: { id: listing.id.toString() },
+                          })
                         }
                       >
                         <Edit className="h-4 w-4 mr-1" />
@@ -200,6 +219,7 @@ export default function ProfilePage() {
           {messagesLoading ? (
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
                 <Skeleton key={i} className="h-20" />
               ))}
             </div>
@@ -226,12 +246,17 @@ export default function ProfilePage() {
                             {formatPhoneNumber(conv.otherPhone)}
                           </h3>
                           {conv.unreadCount > 0 && (
-                            <Badge variant="destructive" className="h-5 min-w-5 rounded-full px-1 text-xs">
+                            <Badge
+                              variant="destructive"
+                              className="h-5 min-w-5 rounded-full px-1 text-xs"
+                            >
                               {conv.unreadCount}
                             </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">{conv.listingTitle}</p>
+                        <p className="text-sm text-muted-foreground mb-1">
+                          {conv.listingTitle}
+                        </p>
                         <p className="text-sm text-muted-foreground line-clamp-1">
                           {conv.lastMessage}
                         </p>

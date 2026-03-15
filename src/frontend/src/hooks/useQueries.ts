@@ -1,31 +1,31 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useActor } from './useActor';
-import { useMobileAuth } from './useMobileAuth';
-import type { ProductListing, ChatMessage } from '../backend';
-import { ExternalBlob } from '../backend';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { ChatMessage, ProductListing } from "../backend";
+import { ExternalBlob } from "../backend";
+import { useActor } from "./useActor";
+import { useMobileAuth } from "./useMobileAuth";
 
 export function useListings() {
   const { actor, isFetching } = useActor();
 
   return useQuery<ProductListing[]>({
-    queryKey: ['listings'],
+    queryKey: ["listings"],
     queryFn: async () => {
-      console.log('[useListings] Query function called', {
+      console.log("[useListings] Query function called", {
         timestamp: new Date().toISOString(),
         actorAvailable: !!actor,
         isFetching,
       });
 
       if (!actor) {
-        console.log('[useListings] Actor not available, returning empty array');
+        console.log("[useListings] Actor not available, returning empty array");
         return [];
       }
 
       try {
-        console.log('[useListings] Calling backend getAllListings...');
+        console.log("[useListings] Calling backend getAllListings...");
         const listings = await actor.getAllListings();
-        
-        console.log('[useListings] Backend response received:', {
+
+        console.log("[useListings] Backend response received:", {
           timestamp: new Date().toISOString(),
           listingsCount: listings?.length ?? 0,
           isArray: Array.isArray(listings),
@@ -34,7 +34,10 @@ export function useListings() {
 
         // Validate response is an array
         if (!Array.isArray(listings)) {
-          console.error('[useListings] Response is not an array:', typeof listings);
+          console.error(
+            "[useListings] Response is not an array:",
+            typeof listings,
+          );
           return [];
         }
 
@@ -54,10 +57,11 @@ export function useListings() {
 
         return listings;
       } catch (error) {
-        console.error('[useListings] Error fetching listings:', {
+        console.error("[useListings] Error fetching listings:", {
           timestamp: new Date().toISOString(),
           error,
-          errorMessage: error instanceof Error ? error.message : 'Unknown error',
+          errorMessage:
+            error instanceof Error ? error.message : "Unknown error",
           errorStack: error instanceof Error ? error.stack : undefined,
         });
         throw error;
@@ -84,14 +88,14 @@ export function useCreateListing() {
       image: File;
     }) => {
       if (!actor) {
-        throw new Error('Backend connection not available');
+        throw new Error("Backend connection not available");
       }
 
       if (!phoneNumber) {
-        throw new Error('You must be logged in to create a listing');
+        throw new Error("You must be logged in to create a listing");
       }
 
-      console.log('useCreateListing - Creating listing with data:', {
+      console.log("useCreateListing - Creating listing with data:", {
         title: data.title,
         description: data.description,
         price: data.price,
@@ -113,18 +117,18 @@ export function useCreateListing() {
         data.category,
         imageBlob,
         BigInt(Date.now() * 1000000),
-        data.brand || null
+        data.brand || null,
       );
 
-      console.log('useCreateListing - Listing created with ID:', listingId);
+      console.log("useCreateListing - Listing created with ID:", listingId);
       return listingId;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['listings'] });
-      queryClient.invalidateQueries({ queryKey: ['userListings'] });
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["userListings"] });
     },
     onError: (error) => {
-      console.error('useCreateListing - Error creating listing:', error);
+      console.error("useCreateListing - Error creating listing:", error);
     },
   });
 }
@@ -134,12 +138,12 @@ export function useUserListings() {
   const { phoneNumber } = useMobileAuth();
 
   return useQuery<ProductListing[]>({
-    queryKey: ['userListings', phoneNumber],
+    queryKey: ["userListings", phoneNumber],
     queryFn: async () => {
       if (!actor || !phoneNumber) return [];
-      console.log('useUserListings - Fetching listings for:', phoneNumber);
+      console.log("useUserListings - Fetching listings for:", phoneNumber);
       const listings = await actor.getUserListings(phoneNumber);
-      console.log('useUserListings - Retrieved listings:', listings.length);
+      console.log("useUserListings - Retrieved listings:", listings.length);
       return listings;
     },
     enabled: !!actor && !!phoneNumber && !isFetching,
@@ -154,13 +158,13 @@ export function useDeleteListing() {
   return useMutation({
     mutationFn: async (listingId: bigint) => {
       if (!actor || !phoneNumber) {
-        throw new Error('Not authenticated');
+        throw new Error("Not authenticated");
       }
       await actor.deleteListing(listingId, phoneNumber);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['listings'] });
-      queryClient.invalidateQueries({ queryKey: ['userListings'] });
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["userListings"] });
     },
   });
 }
@@ -181,7 +185,7 @@ export function useEditListing() {
       image: ExternalBlob;
     }) => {
       if (!actor || !phoneNumber) {
-        throw new Error('Not authenticated');
+        throw new Error("Not authenticated");
       }
 
       await actor.editListing(
@@ -192,12 +196,12 @@ export function useEditListing() {
         data.price,
         data.category,
         data.image,
-        data.brand || null
+        data.brand || null,
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['listings'] });
-      queryClient.invalidateQueries({ queryKey: ['userListings'] });
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["userListings"] });
     },
   });
 }
@@ -206,7 +210,7 @@ export function useListing(listingId: bigint | undefined) {
   const { actor, isFetching } = useActor();
 
   return useQuery<ProductListing | null>({
-    queryKey: ['listing', listingId?.toString()],
+    queryKey: ["listing", listingId?.toString()],
     queryFn: async () => {
       if (!actor || !listingId) return null;
       return await actor.getListing(listingId);
@@ -219,7 +223,7 @@ export function useCategories() {
   const { actor, isFetching } = useActor();
 
   return useQuery<string[]>({
-    queryKey: ['categories'],
+    queryKey: ["categories"],
     queryFn: async () => {
       if (!actor) return [];
       const categories = await actor.getAllCategories();
@@ -233,7 +237,7 @@ export function useSearchListings(searchTerm: string) {
   const { actor, isFetching } = useActor();
 
   return useQuery<ProductListing[]>({
-    queryKey: ['searchListings', searchTerm],
+    queryKey: ["searchListings", searchTerm],
     queryFn: async () => {
       if (!actor || !searchTerm) return [];
       return await actor.searchListings(searchTerm);
@@ -246,7 +250,7 @@ export function useListingsByCategory(category: string) {
   const { actor, isFetching } = useActor();
 
   return useQuery<ProductListing[]>({
-    queryKey: ['listingsByCategory', category],
+    queryKey: ["listingsByCategory", category],
     queryFn: async () => {
       if (!actor || !category) return [];
       return await actor.getListingsByCategory(category);
@@ -267,11 +271,14 @@ export function useSendMessage() {
       messageText: string;
     }) => {
       if (!actor || !phoneNumber) {
-        console.error('useSendMessage - Not authenticated', { actor: !!actor, phoneNumber });
-        throw new Error('Not authenticated');
+        console.error("useSendMessage - Not authenticated", {
+          actor: !!actor,
+          phoneNumber,
+        });
+        throw new Error("Not authenticated");
       }
-      
-      console.log('useSendMessage - Sending message:', {
+
+      console.log("useSendMessage - Sending message:", {
         senderPhoneNumber: phoneNumber,
         receiverPhoneNumber: data.receiverPhoneNumber,
         listingId: data.listingId.toString(),
@@ -283,38 +290,45 @@ export function useSendMessage() {
           phoneNumber,
           data.receiverPhoneNumber,
           data.listingId,
-          data.messageText
+          data.messageText,
         );
-        console.log('useSendMessage - Message sent successfully');
+        console.log("useSendMessage - Message sent successfully");
       } catch (error) {
-        console.error('useSendMessage - Error sending message:', error);
+        console.error("useSendMessage - Error sending message:", error);
         throw error;
       }
     },
-    onSuccess: (_, variables) => {
-      console.log('useSendMessage - Invalidating queries after successful send');
-      queryClient.invalidateQueries({ queryKey: ['conversation'] });
-      queryClient.invalidateQueries({ queryKey: ['unreadMessages'] });
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    onSuccess: (_) => {
+      console.log(
+        "useSendMessage - Invalidating queries after successful send",
+      );
+      queryClient.invalidateQueries({ queryKey: ["conversation"] });
+      queryClient.invalidateQueries({ queryKey: ["unreadMessages"] });
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
     },
     onError: (error) => {
-      console.error('useSendMessage - Mutation error:', error);
+      console.error("useSendMessage - Mutation error:", error);
     },
   });
 }
 
 export function useConversation(
   otherPhoneNumber: string | undefined,
-  listingId: bigint | undefined
+  listingId: bigint | undefined,
 ) {
   const { actor, isFetching } = useActor();
   const { phoneNumber } = useMobileAuth();
 
   return useQuery<ChatMessage[]>({
-    queryKey: ['conversation', phoneNumber, otherPhoneNumber, listingId?.toString()],
+    queryKey: [
+      "conversation",
+      phoneNumber,
+      otherPhoneNumber,
+      listingId?.toString(),
+    ],
     queryFn: async () => {
       if (!actor || !phoneNumber || !otherPhoneNumber || !listingId) {
-        console.log('useConversation - Missing required parameters', {
+        console.log("useConversation - Missing required parameters", {
           actor: !!actor,
           phoneNumber,
           otherPhoneNumber,
@@ -322,23 +336,32 @@ export function useConversation(
         });
         return [];
       }
-      
-      console.log('useConversation - Fetching conversation:', {
+
+      console.log("useConversation - Fetching conversation:", {
         phoneNumber1: phoneNumber,
         phoneNumber2: otherPhoneNumber,
         listingId: listingId.toString(),
       });
 
       try {
-        const messages = await actor.getConversation(phoneNumber, otherPhoneNumber, listingId);
-        console.log('useConversation - Retrieved messages:', messages.length);
+        const messages = await actor.getConversation(
+          phoneNumber,
+          otherPhoneNumber,
+          listingId,
+        );
+        console.log("useConversation - Retrieved messages:", messages.length);
         return messages;
       } catch (error) {
-        console.error('useConversation - Error fetching conversation:', error);
+        console.error("useConversation - Error fetching conversation:", error);
         throw error;
       }
     },
-    enabled: !!actor && !!phoneNumber && !!otherPhoneNumber && !!listingId && !isFetching,
+    enabled:
+      !!actor &&
+      !!phoneNumber &&
+      !!otherPhoneNumber &&
+      !!listingId &&
+      !isFetching,
     refetchInterval: 3000,
   });
 }
@@ -349,28 +372,35 @@ export function useMarkMessagesAsRead() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { senderPhoneNumber: string; listingId: bigint }) => {
+    mutationFn: async (data: {
+      senderPhoneNumber: string;
+      listingId: bigint;
+    }) => {
       if (!actor || !phoneNumber) {
-        console.error('useMarkMessagesAsRead - Not authenticated');
-        throw new Error('Not authenticated');
+        console.error("useMarkMessagesAsRead - Not authenticated");
+        throw new Error("Not authenticated");
       }
-      
-      console.log('useMarkMessagesAsRead - Marking messages as read:', {
+
+      console.log("useMarkMessagesAsRead - Marking messages as read:", {
         senderPhoneNumber: data.senderPhoneNumber,
         receiverPhoneNumber: phoneNumber,
         listingId: data.listingId.toString(),
       });
 
-      await actor.markMessagesAsRead(data.senderPhoneNumber, phoneNumber, data.listingId);
-      console.log('useMarkMessagesAsRead - Messages marked as read');
+      await actor.markMessagesAsRead(
+        data.senderPhoneNumber,
+        phoneNumber,
+        data.listingId,
+      );
+      console.log("useMarkMessagesAsRead - Messages marked as read");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['unreadMessages'] });
-      queryClient.invalidateQueries({ queryKey: ['conversation'] });
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      queryClient.invalidateQueries({ queryKey: ["unreadMessages"] });
+      queryClient.invalidateQueries({ queryKey: ["conversation"] });
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
     },
     onError: (error) => {
-      console.error('useMarkMessagesAsRead - Error:', error);
+      console.error("useMarkMessagesAsRead - Error:", error);
     },
   });
 }
@@ -380,20 +410,29 @@ export function useUnreadMessages() {
   const { phoneNumber } = useMobileAuth();
 
   return useQuery<ChatMessage[]>({
-    queryKey: ['unreadMessages', phoneNumber],
+    queryKey: ["unreadMessages", phoneNumber],
     queryFn: async () => {
       if (!actor || !phoneNumber) {
-        console.log('useUnreadMessages - Missing actor or phoneNumber');
+        console.log("useUnreadMessages - Missing actor or phoneNumber");
         return [];
       }
-      
-      console.log('useUnreadMessages - Fetching unread messages for:', phoneNumber);
+
+      console.log(
+        "useUnreadMessages - Fetching unread messages for:",
+        phoneNumber,
+      );
       try {
         const messages = await actor.getUnreadMessages(phoneNumber);
-        console.log('useUnreadMessages - Retrieved unread messages:', messages.length);
+        console.log(
+          "useUnreadMessages - Retrieved unread messages:",
+          messages.length,
+        );
         return messages;
       } catch (error) {
-        console.error('useUnreadMessages - Error fetching unread messages:', error);
+        console.error(
+          "useUnreadMessages - Error fetching unread messages:",
+          error,
+        );
         throw error;
       }
     },
@@ -408,21 +447,30 @@ export function useConversations() {
   const { phoneNumber } = useMobileAuth();
 
   return useQuery<ChatMessage[]>({
-    queryKey: ['conversations', phoneNumber],
+    queryKey: ["conversations", phoneNumber],
     queryFn: async () => {
       if (!actor || !phoneNumber) {
-        console.log('useConversations - Missing actor or phoneNumber');
+        console.log("useConversations - Missing actor or phoneNumber");
         return [];
       }
-      
-      console.log('useConversations - Fetching all conversations for:', phoneNumber);
+
+      console.log(
+        "useConversations - Fetching all conversations for:",
+        phoneNumber,
+      );
       try {
         // Fetch unread messages to get conversation list
         const unreadMessages = await actor.getUnreadMessages(phoneNumber);
-        console.log('useConversations - Retrieved messages:', unreadMessages.length);
+        console.log(
+          "useConversations - Retrieved messages:",
+          unreadMessages.length,
+        );
         return unreadMessages;
       } catch (error) {
-        console.error('useConversations - Error fetching conversations:', error);
+        console.error(
+          "useConversations - Error fetching conversations:",
+          error,
+        );
         throw error;
       }
     },

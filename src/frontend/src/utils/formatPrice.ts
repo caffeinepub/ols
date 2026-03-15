@@ -4,15 +4,15 @@
  * @returns Formatted price string (e.g., "₹1,999" or "₹1,00,000")
  */
 export function formatPrice(price: bigint | number): string {
-  const numPrice = typeof price === 'bigint' ? Number(price) : price;
-  
+  const numPrice = typeof price === "bigint" ? Number(price) : price;
+
   // Use Indian numbering system (lakhs and crores)
-  const formatter = new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  const formatter = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-  
+
   return formatter.format(numPrice);
 }

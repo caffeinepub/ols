@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface MobileAuthState {
   phoneNumber: string | null;
@@ -17,24 +17,32 @@ const useMobileAuthStore = create<MobileAuthState>()(
       phoneNumber: null,
       isLoggingIn: false,
       isInitializing: true,
-      setPhoneNumber: (phoneNumber) => set({ phoneNumber, isInitializing: false }),
+      setPhoneNumber: (phoneNumber) =>
+        set({ phoneNumber, isInitializing: false }),
       setIsLoggingIn: (isLoggingIn) => set({ isLoggingIn }),
       setIsInitializing: (isInitializing) => set({ isInitializing }),
       clear: () => set({ phoneNumber: null, isLoggingIn: false }),
     }),
     {
-      name: 'mobile-auth-storage',
+      name: "mobile-auth-storage",
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.isInitializing = false;
         }
       },
-    }
-  )
+    },
+  ),
 );
 
 export function useMobileAuth() {
-  const { phoneNumber, isLoggingIn, isInitializing, setPhoneNumber, setIsLoggingIn, clear } = useMobileAuthStore();
+  const {
+    phoneNumber,
+    isLoggingIn,
+    isInitializing,
+    setPhoneNumber,
+    setIsLoggingIn,
+    clear,
+  } = useMobileAuthStore();
 
   const login = (phone: string) => {
     setPhoneNumber(phone);

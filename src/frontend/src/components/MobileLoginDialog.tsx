@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,25 +6,28 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useMobileAuth } from '../hooks/useMobileAuth';
-import { toast } from 'sonner';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useMobileAuth } from "../hooks/useMobileAuth";
 
 interface MobileLoginDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export default function MobileLoginDialog({ open, onOpenChange }: MobileLoginDialogProps) {
-  const [phoneNumber, setPhoneNumber] = useState('');
+export default function MobileLoginDialog({
+  open,
+  onOpenChange,
+}: MobileLoginDialogProps) {
+  const [phoneNumber, setPhoneNumber] = useState("");
   const { login } = useMobileAuth();
 
   const validatePhoneNumber = (phone: string): boolean => {
     // Remove all non-digit characters
-    const cleaned = phone.replace(/\D/g, '');
+    const cleaned = phone.replace(/\D/g, "");
     // Check if it's a valid length (10 digits for Indian numbers without country code, or 12 with +91)
     return cleaned.length === 10 || cleaned.length === 12;
   };
@@ -33,25 +36,25 @@ export default function MobileLoginDialog({ open, onOpenChange }: MobileLoginDia
     e.preventDefault();
 
     if (!phoneNumber.trim()) {
-      toast.error('Please enter your mobile number');
+      toast.error("Please enter your mobile number");
       return;
     }
 
     if (!validatePhoneNumber(phoneNumber)) {
-      toast.error('Please enter a valid mobile number');
+      toast.error("Please enter a valid mobile number");
       return;
     }
 
     // Clean the phone number (remove spaces, dashes, etc.)
-    const cleanedPhone = phoneNumber.replace(/\D/g, '');
+    const cleanedPhone = phoneNumber.replace(/\D/g, "");
     login(cleanedPhone);
-    toast.success('Logged in successfully!');
+    toast.success("Logged in successfully!");
     onOpenChange(false);
-    setPhoneNumber('');
+    setPhoneNumber("");
   };
 
   const handleCancel = () => {
-    setPhoneNumber('');
+    setPhoneNumber("");
     onOpenChange(false);
   };
 
@@ -61,7 +64,8 @@ export default function MobileLoginDialog({ open, onOpenChange }: MobileLoginDia
         <DialogHeader>
           <DialogTitle>Login with Mobile Number</DialogTitle>
           <DialogDescription>
-            Enter your mobile number to access your account and manage your listings.
+            Enter your mobile number to access your account and manage your
+            listings.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
-import { X } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { X } from "lucide-react";
 
 interface BrandFilterProps {
   selectedBrands: string[];
@@ -9,13 +9,13 @@ interface BrandFilterProps {
 }
 
 const MOBILE_BRANDS = [
-  'Apple',
-  'Samsung',
-  'OnePlus',
-  'Xiaomi',
-  'Realme',
-  'Vivo',
-  'Oppo',
+  "Apple",
+  "Samsung",
+  "OnePlus",
+  "Xiaomi",
+  "Realme",
+  "Vivo",
+  "Oppo",
 ];
 
 export default function BrandFilter({
@@ -57,7 +57,7 @@ export default function BrandFilter({
             return (
               <Button
                 key={brand}
-                variant={isSelected ? 'default' : 'outline'}
+                variant={isSelected ? "default" : "outline"}
                 onClick={() => toggleBrand(brand)}
                 className="shrink-0"
                 size="sm"

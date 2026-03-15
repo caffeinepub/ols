@@ -1,8 +1,8 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Phone } from 'lucide-react';
-import { formatPhoneNumber } from '../utils/formatPhoneNumber';
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { MessageCircle, Phone } from "lucide-react";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
 
 interface ConversationItem {
   listingId: bigint;
@@ -15,7 +15,11 @@ interface ConversationItem {
 
 interface ConversationListProps {
   conversations: ConversationItem[];
-  onConversationClick: (listingId: bigint, phoneNumber: string, listingTitle: string) => void;
+  onConversationClick: (
+    listingId: bigint,
+    phoneNumber: string,
+    listingTitle: string,
+  ) => void;
 }
 
 export default function ConversationList({
@@ -45,7 +49,7 @@ export default function ConversationList({
               key={`${conversation.listingId}-${conversation.otherPhoneNumber}`}
               className="cursor-pointer hover:bg-muted/50 transition-colors"
               onClick={() => {
-                console.log('ConversationList - Conversation clicked:', {
+                console.log("ConversationList - Conversation clicked:", {
                   listingId: conversation.listingId.toString(),
                   otherPhoneNumber: conversation.otherPhoneNumber,
                   listingTitle: conversation.listingTitle,
@@ -53,7 +57,7 @@ export default function ConversationList({
                 onConversationClick(
                   conversation.listingId,
                   conversation.otherPhoneNumber,
-                  conversation.listingTitle
+                  conversation.listingTitle,
                 );
               }}
             >

@@ -1,36 +1,52 @@
-import { useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { X, Upload, Loader2 } from 'lucide-react';
-import { useCreateListing } from '../hooks/useQueries';
-import { useMobileAuth } from '../hooks/useMobileAuth';
-import { toast } from 'sonner';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useNavigate } from "@tanstack/react-router";
+import { Loader2, Upload, X } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useMobileAuth } from "../hooks/useMobileAuth";
+import { useCreateListing } from "../hooks/useQueries";
 
-const CATEGORIES = ['Smartphones', 'Electronics', 'Fashion', 'Home & Garden', 'Vehicles', 'Real Estate'];
-const MOBILE_BRANDS = ['Apple', 'Samsung', 'OnePlus', 'Xiaomi', 'Realme', 'Vivo', 'Oppo', 'Other'];
+const CATEGORIES = [
+  "Smartphones",
+  "Electronics",
+  "Fashion",
+  "Home & Garden",
+  "Vehicles",
+  "Real Estate",
+];
+const MOBILE_BRANDS = [
+  "Apple",
+  "Samsung",
+  "OnePlus",
+  "Xiaomi",
+  "Realme",
+  "Vivo",
+  "Oppo",
+  "Other",
+];
 
 export function CreateListingPage() {
   const navigate = useNavigate();
   const { phoneNumber } = useMobileAuth();
   const createListing = useCreateListing();
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [brand, setBrand] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
@@ -38,8 +54,8 @@ export function CreateListingPage() {
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
     // Reset brand when category changes away from Smartphones
-    if (newCategory !== 'Smartphones') {
-      setBrand('');
+    if (newCategory !== "Smartphones") {
+      setBrand("");
     }
   };
 
@@ -47,12 +63,12 @@ export function CreateListingPage() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size must be less than 5MB');
+        toast.error("Image size must be less than 5MB");
         return;
       }
 
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please select a valid image file');
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select a valid image file");
         return;
       }
 
@@ -74,31 +90,31 @@ export function CreateListingPage() {
     const newErrors: string[] = [];
 
     if (!phoneNumber) {
-      newErrors.push('You must be logged in to create an ad');
+      newErrors.push("You must be logged in to create an ad");
     }
 
     if (!category) {
-      newErrors.push('Category is required');
+      newErrors.push("Category is required");
     }
 
     if (!title.trim()) {
-      newErrors.push('Title is required');
+      newErrors.push("Title is required");
     } else if (title.length > 100) {
-      newErrors.push('Title must be 100 characters or less');
+      newErrors.push("Title must be 100 characters or less");
     }
 
     if (!description.trim()) {
-      newErrors.push('Description is required');
+      newErrors.push("Description is required");
     } else if (description.length > 500) {
-      newErrors.push('Description must be 500 characters or less');
+      newErrors.push("Description must be 500 characters or less");
     }
 
-    if (!price || parseFloat(price) <= 0) {
-      newErrors.push('Valid price is required');
+    if (!price || Number.parseFloat(price) <= 0) {
+      newErrors.push("Valid price is required");
     }
 
     if (!image) {
-      newErrors.push('Product image is required');
+      newErrors.push("Product image is required");
     }
 
     setErrors(newErrors);
@@ -109,7 +125,7 @@ export function CreateListingPage() {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Please fix the errors before submitting');
+      toast.error("Please fix the errors before submitting");
       return;
     }
 
@@ -117,29 +133,31 @@ export function CreateListingPage() {
       await createListing.mutateAsync({
         title: title.trim(),
         description: description.trim(),
-        price: parseFloat(price),
+        price: Number.parseFloat(price),
         category,
-        brand: category === 'Smartphones' && brand ? brand : undefined,
+        brand: category === "Smartphones" && brand ? brand : undefined,
         image: image!,
       });
 
-      toast.success('Ad created successfully!');
-      navigate({ to: '/profile' });
+      toast.success("Ad created successfully!");
+      navigate({ to: "/profile" });
     } catch (error) {
-      console.error('Error creating listing:', error);
+      console.error("Error creating listing:", error);
       const errorMessage =
-        error instanceof Error ? error.message : 'Failed to create ad. Please try again.';
-      
-      if (errorMessage.includes('logged in')) {
-        toast.error('Please log in to create an ad');
-      } else if (errorMessage.includes('empty')) {
-        toast.error('All fields are required');
-      } else if (errorMessage.includes('image')) {
-        toast.error('Failed to upload image. Please try again.');
+        error instanceof Error
+          ? error.message
+          : "Failed to create ad. Please try again.";
+
+      if (errorMessage.includes("logged in")) {
+        toast.error("Please log in to create an ad");
+      } else if (errorMessage.includes("empty")) {
+        toast.error("All fields are required");
+      } else if (errorMessage.includes("image")) {
+        toast.error("Failed to upload image. Please try again.");
       } else {
         toast.error(errorMessage);
       }
-      
+
       setErrors([errorMessage]);
     }
   };
@@ -161,6 +179,7 @@ export function CreateListingPage() {
                 <AlertDescription>
                   <ul className="list-inside list-disc space-y-1">
                     {errors.map((error, index) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: error list is ephemeral
                       <li key={index}>{error}</li>
                     ))}
                   </ul>
@@ -183,7 +202,11 @@ export function CreateListingPage() {
               <Label htmlFor="category">
                 Category <span className="text-destructive">*</span>
               </Label>
-              <Select value={category} onValueChange={handleCategoryChange} disabled={createListing.isPending}>
+              <Select
+                value={category}
+                onValueChange={handleCategoryChange}
+                disabled={createListing.isPending}
+              >
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
@@ -198,10 +221,14 @@ export function CreateListingPage() {
             </div>
 
             {/* Brand - Second Field (Only show for Smartphones category) */}
-            {category === 'Smartphones' && (
+            {category === "Smartphones" && (
               <div className="space-y-2">
                 <Label htmlFor="brand">Brand</Label>
-                <Select value={brand} onValueChange={setBrand} disabled={createListing.isPending}>
+                <Select
+                  value={brand}
+                  onValueChange={setBrand}
+                  disabled={createListing.isPending}
+                >
                   <SelectTrigger id="brand">
                     <SelectValue placeholder="Select a brand" />
                   </SelectTrigger>
@@ -229,7 +256,9 @@ export function CreateListingPage() {
                 maxLength={100}
                 disabled={createListing.isPending}
               />
-              <p className="text-xs text-muted-foreground">{title.length}/100 characters</p>
+              <p className="text-xs text-muted-foreground">
+                {title.length}/100 characters
+              </p>
             </div>
 
             {/* Description */}
@@ -329,7 +358,7 @@ export function CreateListingPage() {
                   Creating Ad...
                 </>
               ) : (
-                'Create Ad'
+                "Create Ad"
               )}
             </Button>
           </form>

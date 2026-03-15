@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface SearchBarProps {
   value: string;
@@ -21,8 +21,8 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
   }, [localValue, onChange]);
 
   const handleClear = () => {
-    setLocalValue('');
-    onChange('');
+    setLocalValue("");
+    onChange("");
   };
 
   return (
